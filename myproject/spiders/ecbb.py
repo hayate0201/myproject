@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # 光大银行
+# 通过POST请求抓取分页数据
 
-import scrapy,json,codecs,time,os,sys,re
+import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 
 class ecbbSpider(scrapy.spiders.Spider):
     name = "ecbb"
     allowed_domains = ["www.cebbank.com/"]
+    #抓取页面地址
     start_urls=[
         'http://www.cebbank.com/eportal/ui?pageId=478550&currentPage=1&moduleId=12218'
         ]
@@ -24,6 +26,7 @@ class ecbbSpider(scrapy.spiders.Spider):
     def parse(self, response):
         urls = "http://www.cebbank.com/eportal/ui?pageId=478550&currentPage=%d&moduleId=12218" %self.page
         print "================START_REQUESTS============"
+        #进行POST请求，提交相关参数
         yield scrapy.FormRequest(
             urls,
             formdata = {'filter_combinedQuery_SFZS':'1'},#1在售，0停止
@@ -33,7 +36,7 @@ class ecbbSpider(scrapy.spiders.Spider):
     
     def post_ecbb(self,response):
         #保存文件路径
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
+        self.file = codecs.open(self.dir, 'a+', encoding='utf-8')
         #产品总数目
         sel = scrapy.Selector(response)
         total = sel.xpath('//*[@id="pagingDiv"]/table/tbody/tr/td[2]/i/text()').extract()[0] 
@@ -63,7 +66,7 @@ class ecbbSpider(scrapy.spiders.Spider):
             
         try:
             if self.row < total:
-                #如果当前总收录小于总数    
+                #如果当前总收录小于总数，回调parse    
                 self.page+=1
                 urls = "http://www.cebbank.com/eportal/ui?pageId=478550&currentPage=%s&moduleId=12218" %self.page
                 print "GO NEXT PAGE...."
