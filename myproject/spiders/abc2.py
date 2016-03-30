@@ -6,7 +6,6 @@ class AbcdSpider(scrapy.spiders.Spider):
 
     name = "abcd"
     allowed_domains = ["ewealth.abchina.com"]
-    page = 1
     start_urls=[
         'http://ewealth.abchina.com/app/data/api/DataService/BoeProductV2?i=1&s=15&o=0&w=%E5%8F%AF%E5%94%AE|||||||1||0||']
     
@@ -51,7 +50,7 @@ class AbcdSpider(scrapy.spiders.Spider):
             line = json.dumps(dict(item)) + '\n'
             self.file.write(line.decode("unicode_escape")) 
             self.row += 1
-            #yield item
+            yield item
         self.page += 1
         urls = 'http://ewealth.abchina.com/app/data/api/DataService/BoeProductV2?i=%d&s=15&o=0&w=可售|||||||1||0||' %self.page
         
