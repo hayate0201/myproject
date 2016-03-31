@@ -89,56 +89,5 @@ class ecbbSpider(scrapy.spiders.Spider):
                 yield scrapy.Request(urls,callback=self.parse,dont_filter=True)
         except:
             print "This Error"
-        #print sites['ProdList']
-        #print response.body['ProdList']
-        '''
-        total = sel.xpath('//*[@id="pagingDiv"]/table/tbody/tr/td[2]/i/text()').extract()[0] 
-        total = int(total,10) #转为整数方便做比较
-        #print total
-        #提取区域
-        sites = response.xpath('//table[@class="zslccp"]/tbody/tr[@align]')
-        for site in sites:
-            
-            
-            site.xpath('normalize-space(td[1]/text())').extract()
-            
-            
-            
-            
-           
-            
-            
-            
-            
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
-            
-            
         
-        '''
-    '''
-    def parse(self, response):
-        
-        yield scrapy.Request(
-            url="http://www.cebbank.com/eportal/ui?pageId=478550&currentPage=1&moduleId=12218",
-            formdata={'filter_combinedQuery_SFZS': '1'},
-            method='POST',
-            callback=self.post_ecbb
-        )
-       
-        #print response.body
-        
-        sites = response.xpath('//table[@class="zslccp"]')
-        item = sites.extract()[0]
-        
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
-        self.file.write(item) 
-     
-    def post_ecbb(self,response):
-        print response
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
-        self.file.write("test")
-        return
-    ''' 
         
