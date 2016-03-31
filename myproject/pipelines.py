@@ -4,6 +4,7 @@ import codecs
 import pymongo
 import collections
 import os
+import MySQLdb
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -13,16 +14,21 @@ import os
 class MyprojectPipeline(object):
 
     def __init__(self):
+    
+        
+        '''
         #self.file = codecs.open('hxb.txt', 'a', encoding='utf-8')
         BASE_PATH = os.getcwd() #获取当前scrapy项目根目录
-        filename = os.path.join(BASE_PATH,"myproject/data/cmbc.json")
+        filename = os.path.join(BASE_PATH,"myproject/data/pipe.json")
         self.file = codecs.open(filename, 'a', encoding='utf-8')
         #self.mongo_host = "localhost"
         #self.mongo_port="27017"
         #self.mongo_db = "local"
-        self.client = pymongo.MongoClient("localhost",27017)
-        self.db = self.client.local
+        self.client = pymongo.MongoClient("localhost",3306)
+        self.db = self.client.test#连接数据库
+        new_post = {'data':datetime.datetime.now()}
         self.col=self.db.test2
+        '''
     '''
     @classmethod
     def from_crawler(cls, crawler):
@@ -31,8 +37,22 @@ class MyprojectPipeline(object):
             mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
         )
         '''
-    def process_item(self, item, spider):
-        print type(item['risk_level'])
+    def process_item(self, item, spiderei):
+        #当爬虫里面出现yield
+        print "PIPELINES======================"
+        line = json.dumps(dict(item)) + '\n'
+        
+        #conn =MySQLdb.connect(host="localhost",user="root",passwd="31480212",db="test",charset="utf8")    
+        #cursor = conn.cursor()      
+        #add  
+        #写入      
+        #sql = "insert into user(name,created) values(%s,%s)"     
+        #param = "aaa" 
+        #n = cursor.execute(sql,param)      
+        #print 'insert',n 
+        
+        '''
+        #print type(item['risk_level'])
         #这里可以加判断,这里特别注意：显示转换后比较才生效，否则以unicode编码格式比较
 
         if int(item['risk_level'])<3:
@@ -42,7 +62,7 @@ class MyprojectPipeline(object):
         #写入mongodb
         self.col.save(collections.OrderedDict(item))
         return item
-        '''
+        
         print "------------"
         print item
         print "------------"

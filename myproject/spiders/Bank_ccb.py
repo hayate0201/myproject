@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-# 建设
+# 建设银行
 # 需要通过POST请求抓取数据
 # 遍历每个产品
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 
-class ecbbSpider(scrapy.spiders.Spider):
+class ccbSpider(scrapy.spiders.Spider):
     name = "ccb"
     allowed_domains = ["ccb.com"]
     #抓取页面地址

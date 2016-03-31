@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-# 光大银行
-# 通过POST请求抓取分页数据
-
+# 招商银行
+# 遍历每个产品
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 
-class ecbbSpider(scrapy.spiders.Spider):
-    name = "cceb"
+class cebbSpider(scrapy.spiders.Spider):
+    name = "cebb"
     allowed_domains = ["www.cebbank.com/"]
     #抓取页面地址
     
