@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-#from scrapy.selector import Selector
+# 农业银行
+
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 class AbcdSpider(scrapy.spiders.Spider):

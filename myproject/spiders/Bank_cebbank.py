@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# 招商银行
+# 光大银行
 # 遍历每个产品
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
@@ -74,30 +74,3 @@ class cebbSpider(scrapy.spiders.Spider):
                 yield scrapy.Request(urls,callback=self.parse,dont_filter=True)
         except:
             print "This Error"
-       
-    '''
-    def parse(self, response):
-        
-        yield scrapy.Request(
-            url="http://www.cebbank.com/eportal/ui?pageId=478550&currentPage=1&moduleId=12218",
-            formdata={'filter_combinedQuery_SFZS': '1'},
-            method='POST',
-            callback=self.post_ecbb
-        )
-       
-        #print response.body
-        
-        sites = response.xpath('//table[@class="zslccp"]')
-        item = sites.extract()[0]
-        
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
-        self.file.write(item) 
-     
-    def post_ecbb(self,response):
-        print response
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
-        self.file.write("test")
-        return
-    ''' 
-        
