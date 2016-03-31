@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# 农业银行
 from scrapy.spiders import  XMLFeedSpider
 from myproject.items import MyprojectItem
 import time

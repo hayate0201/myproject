@@ -6,12 +6,14 @@ import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 
 class ecbbSpider(scrapy.spiders.Spider):
-    name = "ecbb"
+    name = "cceb"
     allowed_domains = ["www.cebbank.com/"]
     #抓取页面地址
+    
     start_urls=[
         'http://www.cebbank.com/eportal/ui?pageId=478550&currentPage=1&moduleId=12218'
         ]
+    
     def __init__(self):
         #初始页与条数
         self.page=1

@@ -22,7 +22,9 @@ class CmbcSpider(scrapy.spiders.Spider):
     def parse(self, response):
         response_body=str(response.body)
         result=response_body[9:(len(response_body)-2)]
+        print result
         json_obj=json.loads(result)
+        #print json_obj
         item = MyprojectItem()
         item= collections.OrderedDict(item)
         BASE_PATH = os.getcwd() #获取当前scrapy项目根目录
@@ -53,7 +55,7 @@ class CmbcSpider(scrapy.spiders.Spider):
                     item['total_type']="json"
                     item['total_data']=json_obj['list'][i]
                     #普通spride，必须这里就做数据的迭代，否则出错；值全部会变
-                    yield item
+                    #yield item
                     line = item['bank_name'] + item['prod_code'] + item['prod_name'] + item['start_amount'] + \
                            item['live_time'] + item['std_rate'] + item['risk_level'] + "\n"
                     f.write(line)
@@ -62,13 +64,14 @@ class CmbcSpider(scrapy.spiders.Spider):
 
         #url='''http://www.cmbc.com.cn/cs/Satellite?c=Page&cid=1356495592289&pagename=cmbc%2FPage%2
         #FTP_PersonalProductdShopLayOut&rendermode=preview&Type=1&TypeId=1356495507846&productId=FSAC14168N'''
+        '''
         try:
             if 'urls' in dir():
                 yield scrapy.Request(urls, callback=self.parse)
         except:
 
             print "this is error "
-
+        '''
 
     #获取当前时间
     def getCurrentTime(self):
