@@ -3,7 +3,7 @@
 
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
-class AbcdSpider(scrapy.spiders.Spider):
+class IcbcSpider(scrapy.spiders.Spider):
 
     name = "icbc"
     allowed_domains = ["icbc.com.cn"]
@@ -57,11 +57,10 @@ class AbcdSpider(scrapy.spiders.Spider):
             item['start_amount']= i['buyPaamt']#起购金额
             item['live_time']   = i['productTerm']#ProdLimit周期
             item['std_rate']    = i['intendYield']#ProdProfit利率
-            item['risk_level']  = ""#风险等级
+            item['risk_level']  = 1#风险等级
             item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             
             line = json.dumps(dict(item)) + '\n'
             self.file.write(line.decode("unicode_escape")) 
-        
         

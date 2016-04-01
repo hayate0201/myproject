@@ -1,11 +1,11 @@
 
 #银行名	    简写      进度
 
-工商银行    ICBC    
+#工商银行    ICBC    
 #农业银行    ABC    
-中国银行    BC      
+中国银行    Boc
 #建设银行    CCB	
-交通银行    BOC     
+#交通银行    BOOCCC     
 #招商银行    CMB     
 浦发银行    SPDB      
 ###民生银行    CMBC    
