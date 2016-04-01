@@ -1,0 +1,294 @@
+<div class="pro_contp">
+		
+		   
+					<P align=center>个人理财产品信息 <BR>2016年第11期 </P>
+<DIV align=center>
+<TABLE border=1 cellSpacing=0 cellPadding=0 width=635>
+<TBODY>
+<TR>
+<TD width=176><BR><STRONG>产品名称 </STRONG></TD>
+<TD width=94>
+<P align=center><STRONG>发售 </STRONG><BR><STRONG>日期 </STRONG></P></TD>
+<TD width=67>
+<P align=center><STRONG>预期最高年化收益率 </STRONG></P></TD>
+<TD width=71>
+<P align=center><STRONG>认购起点<BR>（万） </STRONG></P></TD>
+<TD width=52>
+<P align=center><STRONG>销售 </STRONG><BR><STRONG>渠道 </STRONG></P></TD>
+<TD width=85>
+<P align=center><STRONG>产品类型 </STRONG></P></TD>
+<TD width=89>
+<P align=center><STRONG>产品 </STRONG><BR><STRONG>特点 </STRONG></P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财 <BR>增强型（安逸版） </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>2.9%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD>
+<TD rowSpan=3 width=52>
+<P align=center>柜台 <BR>网银 <BR>手机<STRONG> </STRONG></P></TD>
+<TD rowSpan=3 width=85>
+<P align=center>货币债券类 </P></TD>
+<TD rowSpan=3 width=89>
+<P align=center>投资便利<BR>高流动性 </P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财 <BR>增强型（尊享版） </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>3%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财 <BR>增强型（至尊版） </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>3.1%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财保本型A款 </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>2.8%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD>
+<TD rowSpan=4 width=52>
+<P align=center>柜台 <BR>网银 <BR>手机<STRONG> </STRONG></P></TD>
+<TD rowSpan=4 width=85>
+<P align=center>货币债券类 </P></TD>
+<TD rowSpan=4 width=89>
+<P align=center>保证本金 <BR>投资便利<BR>高流动性 </P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财保本型B款 </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>2.9%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财保本型C款 </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>3%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈天天理财保本型D款 </P></TD>
+<TD width=94>
+<P align=center>开放 </P></TD>
+<TD width=67>
+<P align=center>3.05%</P></TD>
+<TD width=71>
+<P align=center>600</P></TD></TR>
+<TR>
+<TD rowSpan=4 width=176>
+<P align=center>增盈1531号34天期 </P></TD>
+<TD rowSpan=20 width=94>
+<P>2016．3.23<BR>至 <BR>2016．3.31</P></TD>
+<TD width=67>
+<P align=center>4.25%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD>
+<TD rowSpan=20 width=52>
+<P align=center>柜台 <BR>网银 <BR>手机 </P></TD>
+<TD rowSpan=20 width=85>
+<P align=center>组合投资类 </P></TD>
+<TD rowSpan=20 width=89>
+<P align=center>起点较低 <BR>收益较高 </P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.3%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.35%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.4%</P></TD>
+<TD width=71>
+<P align=center>300</P></TD></TR>
+<TR>
+<TD rowSpan=4 width=176>
+<P align=center>增盈1531号90天期 <BR>（ETC客户优先） </P></TD>
+<TD width=67>
+<P align=center>4.25%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.3%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.35%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.4%</P></TD>
+<TD width=71>
+<P align=center>300</P></TD></TR>
+<TR>
+<TD rowSpan=4 width=176>
+<P align=center>增盈1531号119天期 </P></TD>
+<TD width=67>
+<P align=center>4.2%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.25%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.3%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.35%</P></TD>
+<TD width=71>
+<P align=center>300</P></TD></TR>
+<TR>
+<TD rowSpan=4 width=176>
+<P align=center>增盈1531号182天期 </P></TD>
+<TD width=67>
+<P align=center>4.2%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.25%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.3%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.35%</P></TD>
+<TD width=71>
+<P align=center>300</P></TD></TR>
+<TR>
+<TD rowSpan=4 width=176>
+<P align=center>增盈1531号364天期 </P></TD>
+<TD width=67>
+<P align=center>4.15%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.2%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.25%</P></TD>
+<TD width=71>
+<P align=center>100</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>4.3%</P></TD>
+<TD width=71>
+<P align=center>300</P></TD></TR>
+<TR>
+<TD width=176>
+<P align=center>增盈1531号60天期 <BR>（社区支行专属） </P></TD>
+<TD width=94>
+<P>2016．3.23<BR>至 <BR>2016．3.31</P></TD>
+<TD width=67>
+<P align=center>4.4%</P></TD>
+<TD width=71>
+<P align=center>5</P></TD>
+<TD width=52>
+<P align=center>柜台<STRONG> </STRONG></P></TD>
+<TD width=85>
+<P align=center>组合投资类 </P></TD>
+<TD width=89>
+<P align=center>起点较低 <BR>收益较高 </P></TD></TR>
+<TR>
+<TD rowSpan=2 width=176>
+<P align=center>增盈保本型78号35天期 </P></TD>
+<TD rowSpan=8 width=94>
+<P>2016．3.24<BR>至 <BR>2016．3.30</P></TD>
+<TD width=67>
+<P align=center>3.25% </P></TD>
+<TD width=71>
+<P align=center>5</P></TD>
+<TD rowSpan=8 width=52>
+<P align=center>柜台 <BR>网银 <BR>手机 </P></TD>
+<TD rowSpan=8 width=85>
+<P>货币债券类 </P></TD>
+<TD rowSpan=8 width=89>
+<P align=center>保证本金 </P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>3.3%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD rowSpan=2 width=176>
+<P align=center>增盈保本型78号61天期 </P></TD>
+<TD width=67>
+<P align=center>3.25% </P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>3.3%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD rowSpan=2 width=176>
+<P align=center>增盈保本型78号89天期 </P></TD>
+<TD width=67>
+<P align=center>3.2% </P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>3.25%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR>
+<TR>
+<TD rowSpan=2 width=176>
+<P align=center>增盈保本型78号180天期 </P></TD>
+<TD width=67>
+<P align=center>3.2% </P></TD>
+<TD width=71>
+<P align=center>5</P></TD></TR>
+<TR>
+<TD width=67>
+<P align=center>3.25%</P></TD>
+<TD width=71>
+<P align=center>20</P></TD></TR></TBODY></TABLE></DIV>
+<P style="TEXT-ALIGN: right">&nbsp;&nbsp; <BR>理财产品信息有效期：2016年3月28日至2016年3月31日 <BR></P><STRONG>&nbsp;&nbsp;&nbsp; 重要提示：</STRONG><STRONG> </STRONG>
+<P></P>
+<OL>
+<UL>
+<LI>如需了解产品详情，请以产品说明书为准。本宣传材料不构成销售任何产品之要约或购买任何产品之邀请。 
+<LI>理财产品信息仅供参考，详情请咨询网点理财经理。 </LI></UL></OL>
+			
+		
+		<div class="pro_notice">注：本页面内容仅供参考，部分业务以当地网点的公告与具体规定为准。</div>

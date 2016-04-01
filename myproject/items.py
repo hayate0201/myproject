@@ -23,6 +23,7 @@ class MyprojectItem(scrapy.Item):
     std_rate = scrapy.Field()#利率
     risk_level=scrapy.Field()#风险等级
     create_time=scrapy.Field()#抓取时间
+    status = scrapy.Field()#状态
     total_type=scrapy.Field()#全部数据类型：XML,JSON,HTML,ARRAY
     total_data=scrapy.Field()#全部数据
 
