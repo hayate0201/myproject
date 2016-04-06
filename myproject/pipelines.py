@@ -64,11 +64,15 @@ class MyprojectPipeline(object):
         ret = conn.fetchone()
         if ret:
             #更新
-            conn.execute('update bank_'+item['bank_code']+' set prod_name="test",bank_name=%s where prod_code = %s',(item['bank_name'],item['prod_code']))
+            conn.execute('update bank_'+item['bank_code']+' set bank_name=%s,prod_name=%s where prod_code=%s',(item['bank_name'],item['prod_name'],item['prod_code']))
         else:
             #插入
-            conn.execute('insert into bank_'+item['bank_code']+' values(null,%s,%s,%s)',(item['bank_name'],item['prod_code'],item['prod_name']))
+            #conn.execute('insert into bank_'+item['bank_code']+' values(NULL,%s,%s,%s)',items)
+            conn.execute('insert into bank_'+item['bank_code']+' values(null,%s,%s,%s,%s,%s,%s,%s,%s,%s)'
+                ,(item['bank_name'],item['prod_code'],item['prod_name'],item['live_time'],item['start_amount'],item['risk_level'],item['std_rate'],item['create_time'],item['total_type'])
+                )
     def spider_closed(self, spider):
+        print "!!!!!!!CLOSED SPIDER!!!!!"
         self.file.close()
         self.client.close()
         

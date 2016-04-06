@@ -70,6 +70,7 @@ class ccbSpider(scrapy.spiders.Spider):
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             #item['total_data']  = i#全部数据
             
+            yield item
             line = json.dumps(dict(item)) + '\n'
             self.file.write(line.decode("unicode_escape")) 
             self.row +=1
