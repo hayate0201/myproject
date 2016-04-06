@@ -4,6 +4,9 @@ import codecs
 import pymongo
 import collections
 import os
+import MySQLdb
+import MySQLdb.cursors
+from twisted.enterprise import adbapi
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -12,8 +15,8 @@ import os
 
 class MyprojectPipeline(object):
 
-    def __init__(self):
-        print "__INIT__"
+    def __init__(self,dbpool):
+        self.dbpool = dbpool
         '''
         #self.file = codecs.open('hxb.txt', 'a', encoding='utf-8')
         BASE_PATH = os.getcwd() #获取当前scrapy项目根目录
@@ -33,34 +36,40 @@ class MyprojectPipeline(object):
             mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
         )
         '''
-    def process_item(self, item, spider):
-        print "process_item"
-        print item['bank_code']
-        '''
-        print type(item['risk_level'])
-        #这里可以加判断,这里特别注意：显示转换后比较才生效，否则以unicode编码格式比较
-
-        if int(item['risk_level'])<3:
-            line = json.dumps(collections.OrderedDict(item), ensure_ascii=False) + "\n"
-            self.file.write(line)
-            #self.file.write(dict(item))
-        #写入mongodb
-        self.col.save(collections.OrderedDict(item))
-        return item
+    @classmethod
+    def from_settings(cls, settings):
+        dbargs = dict(
+            host=settings['MYSQL_HOST'],
+            db=settings['MYSQL_DBNAME'],
+            user=settings['MYSQL_USER'],
+            passwd=settings['MYSQL_PASSWD'],
+            charset='utf8',
+            cursorclass = MySQLdb.cursors.DictCursor,
+            use_unicode= True,
+        )
+        dbpool = adbapi.ConnectionPool('MySQLdb', **dbargs)
+        return cls(dbpool)
         
-        print "------------"
-        print item
-        print "------------"
-        line = item['prod_code'] + item['prod_name'] + item['start_amount'] +
-               item['live_time'] + item['std_rate'] + item['risk_level'] + "n"
-        self.file.write(line)
-        return item
-        '''
-
-
-
+    #pipeline默认调用
+    def process_item(self, item, spider):
+        d = self.dbpool.runInteraction(self._do_upinsert, item, spider)	
+        d.addErrback(self._handle_error, item, spider)
+        d.addBoth(lambda _: item)
+        return d
+    
+    #将每行更新或写入数据库中
+    def _do_upinsert(self, conn, item, spider):
+        #查找是否存在相同编码
+        conn.execute('select 1 from bank_'+item['bank_code']+' where prod_code = %s', (item['prod_code']))
+        ret = conn.fetchone()
+        if ret:
+            #更新
+            conn.execute('update bank_'+item['bank_code']+' set prod_name="test",bank_name=%s where prod_code = %s',(item['bank_name'],item['prod_code']))
+        else:
+            #插入
+            conn.execute('insert into bank_'+item['bank_code']+' values(null,%s,%s,%s)',(item['bank_name'],item['prod_code'],item['prod_name']))
     def spider_closed(self, spider):
         self.file.close()
         self.client.close()
-
+        
 

@@ -46,7 +46,7 @@ class BocSpider(scrapy.spiders.Spider):
                
                 item['create_time'] = time.time()#抓取时间
                 item['total_type']  = "json"#全部数据类型
-                
+                yield item
                 line = json.dumps(dict(item)) + '\n'
                 self.file.write(line.decode("unicode_escape")) 
             order +=1
