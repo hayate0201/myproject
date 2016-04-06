@@ -55,6 +55,8 @@ class PinganSpider(scrapy.spiders.Spider):
         item['std_rate']    = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[5]/td[2]/text())').extract()#ProdProfit利率
         item['risk_level']  = ""#风险等级
         item['status']      = response.xpath('normalize-space(//div[@class="top"]/p/span[2]/text())').extract()
+        
+        
         line = json.dumps(dict(item)) + '\n'
         self.file.write(line.decode("unicode_escape")) 
         

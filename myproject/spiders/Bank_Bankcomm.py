@@ -29,7 +29,7 @@ class BankcommSpider(scrapy.spiders.Spider):
             yield scrapy.Request(urls,callback=self.getjson,dont_filter=True)
         
         
-        yield scrapy.Request(urls,callback=self.getjson,dont_filter=True)
+        #yield scrapy.Request(urls,callback=self.getjson,dont_filter=True)
     def getjson(self,response):
         #文件打开方式为添加
         self.file = codecs.open(self.dir, 'a', encoding='utf-8')
