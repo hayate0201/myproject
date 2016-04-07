@@ -5,9 +5,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-class Pipelines(object):
+class CustomPipeline(object):
+
     def process_item(self, item, spider):
-        return item
-
-        
-
+        print "THIS CUSTOM PIPELINES"

@@ -4,7 +4,6 @@
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 class AbcdSpider(scrapy.spiders.Spider):
-
     name = "abcbank"
     allowed_domains = ["ewealth.abchina.com"]
     start_urls=[
