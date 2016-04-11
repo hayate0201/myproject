@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 农业银行
 
-import scrapy,json,codecs,time,os
+import scrapy,json,codecs,time,os,collections
 from myproject.items import MyprojectItem
 class BankabcSpider(scrapy.spiders.Spider):
     name = "bank_abc"
@@ -21,19 +21,16 @@ class BankabcSpider(scrapy.spiders.Spider):
         self.file.write("")#清空文件内容
         
     def parse(self, response):
-        
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
-        sites = response.xpath('//NewDataSet/Table')
-       
         #产品总数目
         sel = scrapy.Selector(response)
         total = sel.xpath('//Table1/total/text()').extract()[0] 
         total = int(total,10) #转为整数方便做比较
         
+        sites = response.xpath('//NewDataSet/Table')
         for site in sites:
             #定义Item
             item = MyprojectItem()
+            item= collections.OrderedDict(item)
             item['bank_code']   = "abcbank"#银行编码
             item['bank_name']   = "农业银行"#银行名称
             item['bank_type']   = "1"#银行类型：
@@ -48,11 +45,8 @@ class BankabcSpider(scrapy.spiders.Spider):
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             item['total_data']  = ""#全部数据
             
-            #item['row'] = self.row
-            yield item
             #写入文件
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
+            yield item
             self.row += 1
         self.page += 1
         urls = 'http://ewealth.abchina.com/app/data/api/DataService/BoeProductV2?i=%d&s=15&o=0&w=可售|||||||1||0||' %self.page

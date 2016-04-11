@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 中信银行
 # 遍历每个产品
-import scrapy,json,codecs,time,os,re
+import scrapy,json,codecs,time,os,re,collections
 from myproject.items import MyprojectItem
 
 class CnbcSpider(scrapy.spiders.Spider):
@@ -15,15 +15,6 @@ class CnbcSpider(scrapy.spiders.Spider):
         #初始页与条数
         self.page=1
         self.row=1
-        
-        #文件设置
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
     
     def parse(self, response):
         urls = "https://mall.bank.ecitic.com/fmall/pd/fin-index.htm"
@@ -37,8 +28,6 @@ class CnbcSpider(scrapy.spiders.Spider):
         )
     
     def post_cnbc(self,response):
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a+', encoding='utf-8')
         #获取总页码
         text = str(response.body)
         test = re.findall(r'\'.eval\(\'(.*?)\'\)',text,re.M)
@@ -50,6 +39,7 @@ class CnbcSpider(scrapy.spiders.Spider):
         #print sites
         for i in sites:
             item = MyprojectItem()
+            item = collections.OrderedDict(item)
             item['bank_code']   = "CNBC"#银行编码
             item['bank_name']   = "中信银行"#银行名称
             item['bank_type']   = "1"#银行类型：
@@ -68,10 +58,7 @@ class CnbcSpider(scrapy.spiders.Spider):
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             item['total_data']  = ""#全部数据
             
-            #print item
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
-        
+            yield item
         try:
             if self.page < totalPage:
                 self.page +=1

@@ -2,7 +2,7 @@
 # 建设银行
 # 需要通过POST请求抓取数据
 # 遍历每个产品
-import scrapy,json,codecs,time,os
+import scrapy,json,codecs,time,os,collections
 from myproject.items import MyprojectItem
 
 class ccbSpider(scrapy.spiders.Spider):
@@ -20,15 +20,6 @@ class ccbSpider(scrapy.spiders.Spider):
         self.row=0
         self.type=1
         
-        #文件设置
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
-    
     def parse(self, response):
         urls = "http://finance.ccb.com/cc_webtran/queryFinanceProdList.gsp"
         print "================START_REQUESTS============"
@@ -47,10 +38,6 @@ class ccbSpider(scrapy.spiders.Spider):
         )
     
     def post_ccb(self,response):
-        
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a+', encoding='utf-8')
-        
         json_obj = json.loads(response.body_as_unicode()) 
         total = json_obj['totalCount'] #当前提取总数
         print "Total:%d" %total
@@ -59,6 +46,7 @@ class ccbSpider(scrapy.spiders.Spider):
         #开始提取
         for i in json_obj['ProdList']:
             item = MyprojectItem()
+            item = collections.OrderedDict(item)
             item['bank_code']   = "ccb"#银行编码
             item['bank_name']   = "建设银行"#银行名称
             item['bank_type']   = "1"#银行类型
@@ -72,11 +60,9 @@ class ccbSpider(scrapy.spiders.Spider):
             item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             #item['total_data']  = i#全部数据
-            
-            yield item
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
+
             self.row +=1
+            yield item
         
         urls = "http://finance.ccb.com/cc_webtran/queryFinanceProdList.gsp"
         try:

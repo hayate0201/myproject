@@ -55,7 +55,7 @@ class CmbcSpider(scrapy.spiders.Spider):
                     item['total_type']="json"
                     item['total_data']=json_obj['list'][i]
                     #普通spride，必须这里就做数据的迭代，否则出错；值全部会变
-                    #yield item
+                    yield item
                     line = item['bank_name'] + item['prod_code'] + item['prod_name'] + item['start_amount'] + \
                            item['live_time'] + item['std_rate'] + item['risk_level'] + "\n"
                     f.write(line)

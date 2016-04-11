@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 光大银行
 # 遍历每个产品
-import scrapy,json,codecs,time,os
+import scrapy,json,codecs,time,os,collections
 from myproject.items import MyprojectItem
 
 class cebbSpider(scrapy.spiders.Spider):
@@ -39,8 +39,6 @@ class cebbSpider(scrapy.spiders.Spider):
         )
     
     def post_ecbb(self,response):
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a+', encoding='utf-8')
         #产品总数目
         sel = scrapy.Selector(response)
         total = sel.xpath('//*[@id="pagingDiv"]/table/tbody/tr/td[2]/i/text()').extract()[0] 
@@ -50,6 +48,7 @@ class cebbSpider(scrapy.spiders.Spider):
         sites = response.xpath('//table[@class="zslccp"]/tbody/tr[@align]')
         for site in sites:
             item = MyprojectItem()
+            item = collections.OrderedDict(item)
             item['bank_code']   = "ecbb"#银行编码
             item['bank_name']   = "光大银行"#银行名称
             item['bank_type']   = "1"#银行类型：
@@ -64,10 +63,8 @@ class cebbSpider(scrapy.spiders.Spider):
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             item['total_data']  = ""#全部数据
             
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
             self.row +=1
-            
+            yield item
         try:
             if self.row < total:
                 #如果当前总收录小于总数，回调parse    

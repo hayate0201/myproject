@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 兴业银行银行
 
-import scrapy,json,codecs,time,os
+import scrapy,json,codecs,time,os,collections
 from myproject.items import MyprojectItem
 
 class ccbSpider(scrapy.spiders.Spider):
@@ -12,28 +12,14 @@ class ccbSpider(scrapy.spiders.Spider):
     start_urls=[
         'http://directbank.cib.com.cn/hall/show/fin/finlist!ajaxPage.do?dataSet.nd=%s&dataSet.rows=3000&dataSet.page=1' %Settime
         ]
-    
-    def __init__(self):
 
-        #文件设置
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
-    
     def parse(self, response):
-        
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a+', encoding='utf-8')
-        
         json_obj = json.loads(response.body_as_unicode())
         total = json_obj['total'] #当前提取总数
 
         for i in json_obj['rows']:
             item = MyprojectItem()
+            item = collections.OrderedDict(item)
             item['bank_code']   = "cib"#银行编码
             item['bank_name']   = "兴业银行"#银行名称
             item['bank_type']   = "1"#银行类型
@@ -48,7 +34,6 @@ class ccbSpider(scrapy.spiders.Spider):
             item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             #item['total_data']  = i#全部数据
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
-            
+
+            yield item
         

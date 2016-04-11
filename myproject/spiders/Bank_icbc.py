@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 工商银行
 
-import scrapy,json,codecs,time,os
+import scrapy,json,codecs,time,os,collections
 from myproject.items import MyprojectItem
 class IcbcSpider(scrapy.spiders.Spider):
 
@@ -13,15 +13,7 @@ class IcbcSpider(scrapy.spiders.Spider):
     def __init__(self):
         self.page=1
         self.row=1
-        #文件设置
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
-        
+
     def parse(self, response):
         
         sites = response.xpath('//div[@data-catal2]')
@@ -44,14 +36,12 @@ class IcbcSpider(scrapy.spiders.Spider):
         
         
     def getjson(self,response):
-        #文件打开方式为添加
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
         
         #转为JOSN格式
         json_obj=json.loads(response.body) 
-        
         for i in json_obj:
             item = MyprojectItem()
+            item = collections.OrderedDict(item)
             item['bank_code']   = "ICBC"#银行编码
             item['bank_name']   = "工商银行"#银行名称
             item['bank_type']   = "1"#银行类型：
@@ -64,7 +54,6 @@ class IcbcSpider(scrapy.spiders.Spider):
             item['risk_level']  = 1#风险等级
             item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
-            
-            line = json.dumps(dict(item)) + '\n'
-            self.file.write(line.decode("unicode_escape")) 
+ 
+            yield item
         

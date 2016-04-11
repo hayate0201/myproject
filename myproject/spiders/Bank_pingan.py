@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 平安银行
 
-import scrapy,json,codecs,time,os,math
+import scrapy,json,codecs,time,os,math,collections
 from myproject.items import MyprojectItem
 class PinganSpider(scrapy.spiders.Spider):
 
@@ -13,13 +13,6 @@ class PinganSpider(scrapy.spiders.Spider):
     def __init__(self):
         self.page=1
         self.row=1
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
         
     def parse(self, response):
         
@@ -44,9 +37,9 @@ class PinganSpider(scrapy.spiders.Spider):
         #URL
         url = response.url.split("/")[-1]
         code = url[0:-6]
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a', encoding='utf-8')
+
         item = MyprojectItem()
+        item = collections.OrderedDict(item)
         item['bank_code']   = "pingan"#银行编码
         item['bank_name']   = "平安银行"#银行名称
         item['bank_type']   = "1"#银行类型：
@@ -58,8 +51,7 @@ class PinganSpider(scrapy.spiders.Spider):
         item['std_rate']    = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[5]/td[2]/text())').extract()#ProdProfit利率
         item['risk_level']  = ""#风险等级
         item['status']      = response.xpath('normalize-space(//div[@class="top"]/p/span[2]/text())').extract()
-        
-        
-        line = json.dumps(dict(item)) + '\n'
-        self.file.write(line.decode("unicode_escape")) 
-        
+        item['create_time'] = time.time()#抓取时间
+        item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
+        #进入管道进行过滤
+        yield item

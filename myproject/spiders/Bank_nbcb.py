@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 宁波银行
 
-import scrapy,json,codecs,time,os,re
+import scrapy,json,codecs,time,os,re,collections
 from myproject.items import MyprojectItem
 
 class nbcbSpider(scrapy.spiders.Spider):
@@ -9,21 +9,7 @@ class nbcbSpider(scrapy.spiders.Spider):
     allowed_domains = ["http://directbank.cib.com.cn/"]
     start_urls=['http://www.nbcb.com.cn/wealth_management_center/financial/index.shtml']
     
-    def __init__(self):
-
-        #文件设置
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
-    
     def parse(self, response):
-        #保存文件路径
-        self.file = codecs.open(self.dir, 'a+', encoding='utf-8')
-        
         #获取总页码
         text = str(response.body)
         test = re.findall(r'pageCount:(\d+)',text,re.M)
@@ -49,6 +35,7 @@ class nbcbSpider(scrapy.spiders.Spider):
         #URL
         sites = response.xpath('//table[@id="tbl_wealth_product"]/tbody/tr')
         item = MyprojectItem()
+        item = collections.OrderedDict(item)
         item['bank_code']   = "NBCB"#银行编码
         item['bank_name']   = "宁波银行"#银行名称
         item['bank_type']   = "1"#银行类型：
@@ -63,5 +50,5 @@ class nbcbSpider(scrapy.spiders.Spider):
         item['create_time'] = time.time()#抓取时间
         item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
         item['total_data']  = ""#全部数据
-        line = json.dumps(dict(item)) + '\n'
-        self.file.write(line.decode("unicode_escape")) 
+        
+        yield item
