@@ -36,7 +36,6 @@ class IcbcSpider(scrapy.spiders.Spider):
         
         
     def getjson(self,response):
-        
         #转为JOSN格式
         json_obj=json.loads(response.body) 
         for i in json_obj:
