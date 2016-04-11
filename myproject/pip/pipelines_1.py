@@ -6,6 +6,5 @@
 
 
 class CustomPipeline(object):
-
     def process_item(self, item, spider):
-        print "THIS CUSTOM PIPELINES"
+        print "THIS CUSTOM PIPELINES_1"

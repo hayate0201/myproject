@@ -5,7 +5,7 @@ import scrapy,json,codecs,time,os,re,collections
 from myproject.items import MyprojectItem
 
 class CnbcSpider(scrapy.spiders.Spider):
-    name = "bank_cnbc"
+    name = "bank_cncb"
     allowed_domains = ["mall.bank.ecitic.com"]
     #抓取页面地址
     
