@@ -5,7 +5,7 @@ import scrapy,json,codecs,time,os,re
 from myproject.items import MyprojectItem
 
 class nbcbSpider(scrapy.spiders.Spider):
-    name = "nbcb"
+    name = "bank_nbcb"
     allowed_domains = ["http://directbank.cib.com.cn/"]
     start_urls=['http://www.nbcb.com.cn/wealth_management_center/financial/index.shtml']
     
@@ -13,7 +13,10 @@ class nbcbSpider(scrapy.spiders.Spider):
 
         #文件设置
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/nbcb.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
     

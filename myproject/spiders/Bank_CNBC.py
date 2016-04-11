@@ -5,7 +5,7 @@ import scrapy,json,codecs,time,os,re
 from myproject.items import MyprojectItem
 
 class CnbcSpider(scrapy.spiders.Spider):
-    name = "cnbc"
+    name = "bank_cnbc"
     allowed_domains = ["mall.bank.ecitic.com"]
     #抓取页面地址
     
@@ -18,7 +18,10 @@ class CnbcSpider(scrapy.spiders.Spider):
         
         #文件设置
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/cnbc.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
     

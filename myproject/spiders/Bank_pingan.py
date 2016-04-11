@@ -5,7 +5,7 @@ import scrapy,json,codecs,time,os,math
 from myproject.items import MyprojectItem
 class PinganSpider(scrapy.spiders.Spider):
 
-    name = "pingan"
+    name = "bank_pingan"
     allowed_domains = ["haoshi.pingan.com/"]
     start_urls=[
         'http://chaoshi.pingan.com/bankListIframe.shtml?npage=1']
@@ -14,7 +14,10 @@ class PinganSpider(scrapy.spiders.Spider):
         self.page=1
         self.row=1
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/pingan.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
         

@@ -6,7 +6,7 @@ from myproject.items import MyprojectItem
 
 
 class BocSpider(scrapy.spiders.Spider):
-    name = "boc"
+    name = "bank_boc"
     allowed_domains = ["www.boc.cn"]
     start_urls=[
         'http://www.boc.cn/fimarkets/cs8/201109/t20110922_1532694.html']
@@ -19,7 +19,10 @@ class BocSpider(scrapy.spiders.Spider):
     def __init__(self):
         
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/boc.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
         

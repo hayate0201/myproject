@@ -5,7 +5,7 @@ import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 class BankcommSpider(scrapy.spiders.Spider):
 
-    name = "bankcomm"
+    name = "bank_comm"
     allowed_domains = ["www.bankcomm.com/"]
     start_urls=[
         'http://www.bankcomm.com/BankCommSite/jyjr/cn/lcpd/queryFundInfoListNew.do?currency=-1' #-1全部 1人民币 2外币
@@ -16,7 +16,10 @@ class BankcommSpider(scrapy.spiders.Spider):
         self.page=1
         self.row=1
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/bankcomm.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
         

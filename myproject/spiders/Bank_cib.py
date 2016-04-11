@@ -5,7 +5,7 @@ import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
 
 class ccbSpider(scrapy.spiders.Spider):
-    name = "cib"
+    name = "bank_cib"
     allowed_domains = ["http://directbank.cib.com.cn/"]
     #抓取页面地址
     Settime = time.time()
@@ -17,7 +17,10 @@ class ccbSpider(scrapy.spiders.Spider):
 
         #文件设置
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/cib.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
     
@@ -41,6 +44,7 @@ class ccbSpider(scrapy.spiders.Spider):
             item['live_time']   = i['timeLimit']#ProdLimit周期
             item['std_rate']    = i['referenceIncome']#ProdProfit利率
             item['risk_level']  = i['prodRRName']#风险等级
+            item['stauts']      = i['prodStatus']#产品状态
             item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             #item['total_data']  = i#全部数据

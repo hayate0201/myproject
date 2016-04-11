@@ -3,8 +3,8 @@
 
 import scrapy,json,codecs,time,os
 from myproject.items import MyprojectItem
-class AbcdSpider(scrapy.spiders.Spider):
-    name = "abcbank"
+class BankabcSpider(scrapy.spiders.Spider):
+    name = "bank_abc"
     allowed_domains = ["ewealth.abchina.com"]
     start_urls=[
         'http://ewealth.abchina.com/app/data/api/DataService/BoeProductV2?i=1&s=15&o=0&w=%E5%8F%AF%E5%94%AE|||||||1||0||']
@@ -13,7 +13,10 @@ class AbcdSpider(scrapy.spiders.Spider):
         self.page=1
         self.row=1
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/abc2.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
         

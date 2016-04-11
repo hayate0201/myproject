@@ -6,7 +6,7 @@ import scrapy,json,codecs,time,os,re,chardet
 from myproject.items import MyprojectItem
 class SpdbSpider(scrapy.spiders.Spider):
 
-    name = "spdb"
+    name = "bank_spdb"
     allowed_domains = ["http://ebank.spdb.com.cn/"]
     start_urls=[
         'http://ebank.spdb.com.cn/net/finnaceMoreInfo.do?ftype=7&num=11&ispage=1&_PagableInfor.PageNo=1']
@@ -17,7 +17,10 @@ class SpdbSpider(scrapy.spiders.Spider):
         self.typelist=[7,0,5,3,2]
         
         BASE_PATH = os.getcwd()
-        self.dir = os.path.join(BASE_PATH,"myproject/data/spdb.json")
+        dirname = os.path.join(BASE_PATH,"data")
+        if not os.path.exists(dirname):
+			os.makedirs(dirname)
+        self.dir = os.path.join(dirname,self.name+".json")
         self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
         self.file.write("")#清空文件内容
         
