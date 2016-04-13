@@ -12,11 +12,14 @@ class BocSpider(scrapy.spiders.Spider):
         'http://www.boc.cn/fimarkets/cs8/201109/t20110922_1532694.html']
         
     #自定义管道
-    '''
+    
     custom_settings = {
-        'ITEM_PIPELINES':{'myproject.pip.pipelines_1.CustomPipeline': 200}
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_boc.BocPipeline': 200
+        }
     }
-    '''
+    
   
     def parse(self, response):
         sites = response.xpath('//table/tbody')
@@ -31,18 +34,33 @@ class BocSpider(scrapy.spiders.Spider):
                 item['bank_type']   = "1"#银行类型
                 item['prod_code']   = i.xpath('td[1]/text()').extract()[0]
                 item['prod_name']   = i.xpath('td[2]/text()').extract()[0]
-                item['prod_type']   = ""
+                
                 
                 if order == 2:
+                    item['prod_type']   = "外币理财产品"
                     item['live_time']   = i.xpath('td[4]/text()').extract()[0]
+                    item['buying_start']= i.xpath('td[13]/text()').extract()[0]
+                    item['buying_end']= i.xpath('td[14]/text()').extract()[0]
                     item['start_amount']= i.xpath('td[6]/text()').extract()[0]
                     item['risk_level']  = i.xpath('td[12]/text()').extract()[0]#风险等级
-                else:
+                    
+                elif order == 3:
+                    item['prod_type']   = "长期开放类人民币理财产品"
                     item['live_time']   = i.xpath('td[3]/text()').extract()[0]
+                    item['buying_start']= ""
+                    item['buying_end']  = ""
                     item['start_amount']= i.xpath('td[5]/text()').extract()[0]
                     item['risk_level']  = i.xpath('td[11]/text()').extract()[0]#风险等级
+                else:
+                    item['prod_type']   = "人民币币理财产品"
+                    item['live_time']   = i.xpath('td[3]/text()').extract()[0]
+                    item['buying_start']= i.xpath('td[12]/text()').extract()[0]
+                    item['buying_end']= i.xpath('td[13]/text()').extract()[0]
+                    item['start_amount']= i.xpath('td[5]/text()').extract()[0]
+                    item['risk_level']  = i.xpath('td[11]/text()').extract()[0]#风险等级
+                    
+                    
                 item['std_rate']    = i.xpath('td[4]/text()').extract()[0]
-               
                 item['create_time'] = time.time()#抓取时间
                 item['total_type']  = "json"#全部数据类型
                 

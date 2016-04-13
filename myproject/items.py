@@ -20,6 +20,9 @@ class MyprojectItem(scrapy.Item):
     prod_type = scrapy.Field()#产品类型：理财产品，基金，信托等
     start_amount = scrapy.Field()#起购金额
     live_time = scrapy.Field()#周期
+    buying_start = scrapy.Field()#购买开始日期
+    buying_end = scrapy.Field()#购买结束日期
+    
     std_rate = scrapy.Field()#利率
     risk_level=scrapy.Field()#风险等级
     create_time=scrapy.Field()#抓取时间

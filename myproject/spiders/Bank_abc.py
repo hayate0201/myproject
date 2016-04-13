@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 农业银行
 
-import scrapy,json,codecs,time,os,collections
+import scrapy,json,codecs,time,os,collections,datetime
 from myproject.items import MyprojectItem
 class BankabcSpider(scrapy.spiders.Spider):
     name = "bank_abc"
@@ -12,13 +12,6 @@ class BankabcSpider(scrapy.spiders.Spider):
     def __init__(self):
         self.page=1
         self.row=1
-        BASE_PATH = os.getcwd()
-        dirname = os.path.join(BASE_PATH,"data")
-        if not os.path.exists(dirname):
-			os.makedirs(dirname)
-        self.dir = os.path.join(dirname,self.name+".json")
-        self.file = codecs.open(self.dir, 'wb+', encoding='utf-8')
-        self.file.write("")#清空文件内容
         
     def parse(self, response):
         #产品总数目
@@ -39,6 +32,9 @@ class BankabcSpider(scrapy.spiders.Spider):
             item['prod_type']   = "1"#产品类型
             item['start_amount']= site.xpath('PurStarAmo/text()').extract()[0]#起购金额
             item['live_time']   = site.xpath('ProdLimit/text()').extract()[0]#ProdLimit周期
+            buying_time = site.xpath('ProdSaleDate/text()').extract()[0].split('-')#购买时间
+            item['buying_start'] = buying_time[0]
+            item['buying_end']  = buying_time[1]
             item['std_rate']    = site.xpath('ProdProfit/text()').extract()[0]#ProdProfit利率
             item['risk_level']  = ""#风险等级
             item['create_time'] = time.time()#抓取时间
