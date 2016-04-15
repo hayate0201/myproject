@@ -1,0 +1,13 @@
+abc	农业银行
+boc	中国银行
+ccb	建设银行
+cebb	光大银行
+cib	兴业银行
+cmb	招商银行
+cmbc	民生银行
+cncb	中信银行
+hxb	华夏银行
+comm	交通银行
+icbc	工商银行
+pingan	平安银行
+spdb	浦发银行

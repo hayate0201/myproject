@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 交通银行
 
-import scrapy,json,codecs,time,os,collections
+import scrapy,json,codecs,time,os,collections,re
 from myproject.items import MyprojectItem
 class BankcommSpider(scrapy.spiders.Spider):
 
@@ -21,20 +21,17 @@ class BankcommSpider(scrapy.spiders.Spider):
         
         for site in sites:
             code = site.xpath('@id').extract()[0] #产品编号
+        #code = "0191150020"
+        #code = "0131150001"
             urls = "http://www.bankcomm.com/BankCommSite/jyjr/cn/lcpd/queryFundInfoNew.do?code=%s" %code
             yield scrapy.Request(urls,callback=self.getjson,dont_filter=True)
         
         
         #yield scrapy.Request(urls,callback=self.getjson,dont_filter=True)
     def getjson(self,response):
-        print "GET JSON"
-        code = response.url.split("/")[-1]
-        code = code[25:len(code)]
-        print code
-        code = code[0:2]
-        print code
         
         i = response.xpath('//div[@class="main"]//table/tr/td[1]/text()')
+        code = i[1].extract()
         item = MyprojectItem()
         item = collections.OrderedDict(item)
         item['bank_code']   = "BOC"#银行编码
@@ -43,19 +40,32 @@ class BankcommSpider(scrapy.spiders.Spider):
         item['prod_code']   = i[1].extract().strip()#产品编码
         item['prod_name']   = i[0].extract().strip()#产品名称
         item['prod_type']   = ""#产品类型
-        
-        item['live_time']   = ""#ProdLimit周期
+        item['live_time']   = ""
+        item['buying_start']= ""
+        item['buying_end']  = ""
         #ProdProfit利率
         if code == '02':
             item['std_rate']    = ""
+            
         elif code[0:1] == '2':
             item['std_rate']    = i[10].extract().strip()
+            item['live_time']   = i[8].extract()[0]#ProdLimit周期
+            item['buying_start']= i[6].extract()[0]
+            item['buying_end']  = i[7].extract()[0]
+            item['prod_type']   = "封闭式"#产品类型
         else:
-            item['std_rate']    = i[7].extract().strip()
+            #item['std_rate']    = i[7].extract().strip()
+            item['std_rate']    = re.findall(r'(\d*.\d*%)',i[7].extract().strip(),re.M)
+            if item['std_rate'] != []:
+                item['std_rate'] = item['std_rate'][0]
+            else:
+                item['std_rate'] = ""
+            item['prod_type']   = "开放式"#产品类型
             
         item['start_amount']= i[4].extract().strip()
         item['risk_level']  = i[3].extract().strip()#风险等级
-        item['create_time'] = time.time()#抓取时间
+        
         item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
         
         yield item
+        

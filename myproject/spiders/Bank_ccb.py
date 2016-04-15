@@ -55,6 +55,8 @@ class ccbSpider(scrapy.spiders.Spider):
             item['prod_type']   = self.type#产品类型
             item['start_amount']= i['purFloorAmt']#起购金额
             item['live_time']   = i['investPeriod']#ProdLimit周期
+            item['buying_start']= i['collBgnDate']#购买周期
+            item['buying_end']  = i['collEndDate']#购买周期
             item['std_rate']    = i['yieldRate']#ProdProfit利率
             item['risk_level']  = i['riskLevel']#风险等级
             item['create_time'] = time.time()#抓取时间

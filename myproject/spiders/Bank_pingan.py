@@ -44,13 +44,15 @@ class PinganSpider(scrapy.spiders.Spider):
         item['bank_name']   = "平安银行"#银行名称
         item['bank_type']   = "1"#银行类型：
         item['prod_code']   = code#产品编码
-        item['prod_name']   = response.xpath('//div[@class="title"]/span[@class="cor_1"]/text()').extract()
+        item['prod_name']   = response.xpath('//div[@class="title"]/span[@class="cor_1"]/text()').extract()[0]
         item['prod_type']   = ""#产品类型
-        item['start_amount']= response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[4]/td[2]/text())').extract()#起购金额
-        item['live_time']   = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[3]/td[2]/text())').extract()#ProdLimit周期
-        item['std_rate']    = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[5]/td[2]/text())').extract()#ProdProfit利率
+        item['start_amount']= response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[4]/td[2]/text())').extract()[0]#起购金额
+        item['live_time']   = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[3]/td[2]/text())').extract()[0]#ProdLimit周期
+        item['buying_start']= response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[1]/td[2]/text())').extract()[0]
+        item['buying_end']  = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[1]/td[4]/text())').extract()[0]
+        item['std_rate']    = response.xpath('normalize-space(//table[@class="detail_tab3"]/tbody/tr[5]/td[2]/text())').extract()[0]#ProdProfit利率
         item['risk_level']  = ""#风险等级
-        item['status']      = response.xpath('normalize-space(//div[@class="top"]/p/span[2]/text())').extract()
+        item['status']      = response.xpath('normalize-space(//div[@class="top"]/p/span[2]/text())').extract()[0]
         item['create_time'] = time.time()#抓取时间
         item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
         #进入管道进行过滤

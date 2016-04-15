@@ -28,10 +28,11 @@ class ccbSpider(scrapy.spiders.Spider):
             item['prod_type']   = ""#产品类型
             item['start_amount']= i['minAmt']#起购金额
             item['live_time']   = i['timeLimit']#ProdLimit周期
+            item['buying_start']= i['sbscrBeginDate']
+            item['buying_end']  = i['sbscrEndDate']
             item['std_rate']    = i['referenceIncome']#ProdProfit利率
             item['risk_level']  = i['prodRRName']#风险等级
             item['stauts']      = i['prodStatus']#产品状态
-            item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
             #item['total_data']  = i#全部数据
 

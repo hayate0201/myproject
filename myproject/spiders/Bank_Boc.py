@@ -12,11 +12,10 @@ class BocSpider(scrapy.spiders.Spider):
         'http://www.boc.cn/fimarkets/cs8/201109/t20110922_1532694.html']
         
     #自定义管道
-    
     custom_settings = {
         'ITEM_PIPELINES':{
             'myproject.pipelines.Pipelines': 100,
-            'myproject.pip.pipelines_boc.BocPipeline': 200
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
     
@@ -59,9 +58,7 @@ class BocSpider(scrapy.spiders.Spider):
                     item['start_amount']= i.xpath('td[5]/text()').extract()[0]
                     item['risk_level']  = i.xpath('td[11]/text()').extract()[0]#风险等级
                     
-                    
                 item['std_rate']    = i.xpath('td[4]/text()').extract()[0]
-                item['create_time'] = time.time()#抓取时间
                 item['total_type']  = "json"#全部数据类型
                 
                 yield item

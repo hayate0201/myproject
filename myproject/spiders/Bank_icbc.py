@@ -37,6 +37,7 @@ class IcbcSpider(scrapy.spiders.Spider):
         
     def getjson(self,response):
         #转为JOSN格式
+        
         json_obj=json.loads(response.body) 
         for i in json_obj:
             item = MyprojectItem()
@@ -49,9 +50,11 @@ class IcbcSpider(scrapy.spiders.Spider):
             item['prod_type']   = i['categoryL1']#产品类型
             item['start_amount']= i['buyPaamt']#起购金额
             item['live_time']   = i['productTerm']#ProdLimit周期
+            time = i['offerPeriod'].split("-")
+            item['buying_start']= time[0]
+            item['buying_end']  = time[1]
             item['std_rate']    = i['intendYield']#ProdProfit利率
-            item['risk_level']  = 1#风险等级
-            item['create_time'] = time.time()#抓取时间
+            item['risk_level']  = ""#风险等级
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
  
             yield item

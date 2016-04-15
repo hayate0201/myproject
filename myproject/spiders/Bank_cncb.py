@@ -43,27 +43,32 @@ class CnbcSpider(scrapy.spiders.Spider):
             item['bank_code']   = "CNBC"#银行编码
             item['bank_name']   = "中信银行"#银行名称
             item['bank_type']   = "1"#银行类型：
-            item['prod_code']   = i.xpath('td[2]//a/text()').extract()#产品编码
-            item['prod_name']   = i.xpath('td[3]//a/text()').extract()#产品名称
+            item['prod_code']   = i.xpath('td[2]//a/text()').extract()[0]#产品编码
+            item['prod_name']   = i.xpath('td[3]//a/text()').extract()[0]#产品名称
             item['prod_type']   = "1"#产品类型
             
             start_amount = i.xpath('td[@param_type="first_amt"]//span/text()').extract()[0]#起购金额
-            item['start_amount']= start_amount.replace(',','') + '0000'
+            print start_amount
+            if start_amount != '0': 
+                item['start_amount']= start_amount.replace(',','') + '0000'
+            else:
+                item['start_amount']= '0'
             
-            item['live_time']   = i.xpath('td[7]//span/text()').extract()#ProdLimit周期
-            item['std_rate']    = i.xpath('td[8]//span/text()').extract()#ProdProfit利率
-            item['risk_level']  = i.xpath('td[@param_type="risk_level"]//span/text()').extract()#风险等级
+            item['live_time']   = i.xpath('td[7]//span/text()').extract()[0]#ProdLimit周期
+            item['buying_start']= i.xpath('td[5]//span/text()').extract()[0]#起始日期
+            item['buying_end']  = i.xpath('td[6]//span/text()').extract()[0]#结束日期
+            item['std_rate']    = i.xpath('td[8]//span/text()').extract()[0]#ProdProfit利率
+            item['risk_level']  = i.xpath('td[@param_type="risk_level"]//span/text()').extract()[0]#风险等级
             
             item['create_time'] = time.time()#抓取时间
             item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
-            item['total_data']  = ""#全部数据
             
             yield item
         try:
             if self.page < totalPage:
                 self.page +=1
                 
-                print "正在读取...."
+                print "Loading...."
                 print self.page
                 urls = "https://mall.bank.ecitic.com/fmall/pd/fin-index.htm"
                 yield scrapy.Request(urls, callback=self.parse,dont_filter=True)
