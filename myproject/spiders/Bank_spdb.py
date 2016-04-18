@@ -10,6 +10,14 @@ class SpdbSpider(scrapy.spiders.Spider):
     start_urls=[
         'http://ebank.spdb.com.cn/net/finnaceMoreInfo.do?ftype=7&num=11&ispage=1&_PagableInfor.PageNo=1']
     
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
+    
     def __init__(self):
         self.page=1
         self.type=0

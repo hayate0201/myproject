@@ -10,7 +10,14 @@ class CmbSpider(scrapy.spiders.Spider):
     start_urls=[
         'http://www.cmbchina.com/cfweb/svrajax/product.ashx?op=search&type=m&pageindex=1&salestatus=A&baoben=&currency=&term=&keyword=&series=01&pagesize=20&orderby=ord1'
         ]
-    
+        
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
     def __init__(self):
         self.page=1
         self.row=1

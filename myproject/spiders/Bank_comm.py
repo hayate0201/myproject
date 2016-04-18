@@ -11,6 +11,13 @@ class BankcommSpider(scrapy.spiders.Spider):
         'http://www.bankcomm.com/BankCommSite/jyjr/cn/lcpd/queryFundInfoListNew.do?currency=-1' #-1全部 1人民币 2外币
         ]
         
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
     
     def __init__(self):
         self.page=1

@@ -8,7 +8,15 @@ class CmbcSpider(scrapy.spiders.Spider):
     allowed_domains = ["cmbc.com.cn"]
     page=1
     start_urls=['https://service.cmbc.com.cn/pai_ms/cft/queryTssPrdInScreenfoForJson.gsp?page=%s&rows=10' %page]
-
+    
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
+    
     def __init__(self):
         self.page=1
         self.row=1

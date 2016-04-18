@@ -12,7 +12,15 @@ class ccbSpider(scrapy.spiders.Spider):
     start_urls=[
         'http://directbank.cib.com.cn/hall/show/fin/finlist!ajaxPage.do?dataSet.nd=%s&dataSet.rows=3000&dataSet.page=1' %Settime
         ]
-
+    
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
+    
     def parse(self, response):
         json_obj = json.loads(response.body_as_unicode())
         total = json_obj['total'] #当前提取总数

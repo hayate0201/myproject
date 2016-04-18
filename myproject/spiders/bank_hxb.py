@@ -11,10 +11,11 @@ class HxbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
-            'myproject.pip.pipelines_hxb.hxbPipeline': 200,
-            #'myproject.pip.pipelines_hxbdb.hxbdbPipeline': 201
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
+    
     def __init__(self):
         self.row_time = 0
         self.row_name = 0
@@ -62,24 +63,24 @@ class HxbSpider(scrapy.spiders.Spider):
                     self.last_time = i.xpath('td[2]/p/text()').extract()
                     item['buying_start'] = self.last_time
                     item['buying_end'] = self.last_time
-                    item['start_amount'] = i.xpath('td[4]/p/text()').extract()
-                    item['std_rate'] = i.xpath('td[3]/p/text()').extract()
+                    item['start_amount'] = i.xpath('td[4]/p/text()').extract()[0]
+                    item['std_rate'] = i.xpath('td[3]/p/text()').extract()[0]
                 elif self.row_time >1:
                     self.row_time -=1
-                    item['start_amount'] = i.xpath('td[3]/p/text()').extract()
-                    item['std_rate'] = i.xpath('td[2]/p/text()').extract()
+                    item['start_amount'] = i.xpath('td[3]/p/text()').extract()[0]
+                    item['std_rate'] = i.xpath('td[2]/p/text()').extract()[0]
                     item['buying_start'] = self.last_time
                     item['buying_end'] = self.last_time
             elif self.row_name > 1:#子产品
                 self.row_name -=1
-                item['start_amount'] = i.xpath('td[2]/p/text()').extract()
-                item['std_rate'] = i.xpath('td[1]/p/text()').extract()
+                item['start_amount'] = i.xpath('td[2]/p/text()').extract()[0]
+                item['std_rate'] = i.xpath('td[1]/p/text()').extract()[0]
                 item['buying_start'] = self.last_time
                 item['buying_end'] = self.last_time
                 item['prod_name']= self.last_name
                 
             if row_type:
-                self.last_type = i.xpath('td[6]/p/text()').extract()
+                self.last_type = i.xpath('td[6]/p/text()').extract()[0]
                 item['prod_type'] = self.last_type
             else:
                 item['prod_type'] = self.last_type

@@ -10,6 +10,14 @@ class PinganSpider(scrapy.spiders.Spider):
     start_urls=[
         'http://chaoshi.pingan.com/bankListIframe.shtml?npage=1']
     
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
+    
     def __init__(self):
         self.page=1
         self.row=1

@@ -10,6 +10,14 @@ class IcbcSpider(scrapy.spiders.Spider):
     start_urls=[
         'http://www.icbc.com.cn/ICBCDynamicSite2/money/moneytabs.htm']
     
+    #自定义管道
+    custom_settings = {
+        'ITEM_PIPELINES':{
+            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+        }
+    }
+    
     def __init__(self):
         self.page=1
         self.row=1

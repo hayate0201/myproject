@@ -7,12 +7,13 @@ class BankabcSpider(scrapy.spiders.Spider):
     name = "bank_abc"
     allowed_domains = ["ewealth.abchina.com"]
     start_urls=[
-        'http://ewealth.abchina.com/app/data/api/DataService/BoeProductV2?i=1&s=15&o=0&w=%E5%8F%AF%E5%94%AE|||||||1||0||']
-        #自定义管道
+        'http://ewealth.abchina.com/app/data/api/DataService/BoeProductV2?i=1&s=15&o=0&w=%E5%8F%AF%E5%94%AE|||||||1||0||'
+    ]
+    #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
             'myproject.pipelines.Pipelines': 100,
-            'myproject.pip.pipelines_boc.BocPipeline': 200
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
     def __init__(self):

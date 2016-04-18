@@ -30,6 +30,6 @@ class MongodbPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        key = {'prod_code':item['prod_code']}
+        key = {'prod_name':item['prod_name']}
         self.db[spider.name].update(key,item,upsert=True)
         return item

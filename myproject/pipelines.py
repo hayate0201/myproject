@@ -12,7 +12,6 @@ class Pipelines(object):
     def process_item(self, item, spider):
         item['create_time'] = time.time()#抓取时间
         item['create_time2'] = time.strftime('%Y-%m-%d %H:%M:%S')#抓取时间
-            
         line = json.dumps(collections.OrderedDict(item)) + "\n"
         self.file.write(line.decode("unicode_escape")) 
         return item
