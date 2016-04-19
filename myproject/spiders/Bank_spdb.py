@@ -5,7 +5,7 @@
 import scrapy,json,codecs,time,os,re,chardet,collections
 from myproject.items import MyprojectItem
 class SpdbSpider(scrapy.spiders.Spider):
-    name = "spdb"
+    name = "bank_spdb"
     allowed_domains = ["http://ebank.spdb.com.cn/"]
     start_urls=[
         'http://ebank.spdb.com.cn/net/finnaceMoreInfo.do?ftype=7&num=11&ispage=1&_PagableInfor.PageNo=1']

@@ -11,7 +11,7 @@ class HxbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
-            'myproject.pipelines.Pipelines': 100,
+            'myproject.pip.pipelines_hxb.hxbPipeline': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
