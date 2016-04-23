@@ -41,7 +41,7 @@ class BankcommSpider(scrapy.spiders.Spider):
         code = i[1].extract()
         item = MyprojectItem()
         item = collections.OrderedDict(item)
-        item['bank_code']   = "BOC"#银行编码
+        item['bank_code']   = "comm"#银行编码
         item['bank_name']   = "交通银行"#银行名称
         item['bank_type']   = "1"#银行类型：
         item['prod_code']   = i[1].extract().strip()#产品编码

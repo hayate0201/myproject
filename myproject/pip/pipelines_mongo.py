@@ -31,5 +31,5 @@ class MongodbPipeline(object):
 
     def process_item(self, item, spider):
         key = {'prod_name':item['prod_name']}
-        self.db[spider.name].update(key,item,upsert=True)
+        self.db['bankdata'].update(key,item,upsert=True)
         return item
