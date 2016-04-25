@@ -63,7 +63,7 @@ class CmbSpider(scrapy.spiders.Spider):
         money = response.xpath('normalize-space(//table[@class="buyinfo"]//tr[3]/td[4]/text())').extract()[0]
         item = MyprojectItem()
         item = collections.OrderedDict(item)
-        item['bank_code']   = "Cmb"#银行编码
+        item['bank_code']   = "cmb"#银行编码
         item['bank_name']   = "招商银行"#银行名称
         item['bank_type']   = "1"#银行类型：
         item['prod_code']   = i['PrdCode']#产品编码

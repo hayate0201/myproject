@@ -50,7 +50,7 @@ class IcbcSpider(scrapy.spiders.Spider):
         for i in json_obj:
             item = MyprojectItem()
             item = collections.OrderedDict(item)
-            item['bank_code']   = "ICBC"#银行编码
+            item['bank_code']   = "icbc"#银行编码
             item['bank_name']   = "工商银行"#银行名称
             item['bank_type']   = "1"#银行类型：
             item['prod_code']   = i['prodID']#产品编码

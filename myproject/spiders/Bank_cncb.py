@@ -48,7 +48,7 @@ class CnbcSpider(scrapy.spiders.Spider):
         for i in sites:
             item = MyprojectItem()
             item = collections.OrderedDict(item)
-            item['bank_code']   = "CNBC"#银行编码
+            item['bank_code']   = "cncb"#银行编码
             item['bank_name']   = "中信银行"#银行名称
             item['bank_type']   = "1"#银行类型：
             item['prod_code']   = i.xpath('td[2]//a/text()').extract()[0]#产品编码
