@@ -6,7 +6,7 @@
 
 #把数据导入到mongodb
 
-import pymongo
+import pymongo,datetime
 from scrapy.conf import settings
 
 class MongodbPipeline(object):
@@ -31,5 +31,7 @@ class MongodbPipeline(object):
 
     def process_item(self, item, spider):
         key = {'prod_name':item['prod_name']}
-        self.db['bankdata'].update(key,item,upsert=True)
+        today = datetime.date.today()
+        collname = datetime.datetime.strftime(today, '%Y%m%d')
+        self.db[collname].update(key,item,upsert=True)
         return item

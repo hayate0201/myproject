@@ -31,7 +31,7 @@ class BankabcSpider(scrapy.spiders.Spider):
             #定义Item
             item = MyprojectItem()
             item= collections.OrderedDict(item)
-            item['bank_code']   = "abcbank"#银行编码
+            item['bank_code']   = "abc"#银行编码
             item['bank_name']   = "农业银行"#银行名称
             item['bank_type']   = "1"#银行类型：
             item['prod_code']   = site.xpath('ProductNo/text()').extract()[0]#产品编码
