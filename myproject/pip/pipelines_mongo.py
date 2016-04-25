@@ -32,6 +32,6 @@ class MongodbPipeline(object):
     def process_item(self, item, spider):
         key = {'prod_name':item['prod_name']}
         today = datetime.date.today()
-        collname = datetime.datetime.strftime(today, '%Y%m%d')
+        collname = "d"+str(datetime.datetime.strftime(today, '%Y%m%d'))
         self.db[collname].update(key,item,upsert=True)
         return item
