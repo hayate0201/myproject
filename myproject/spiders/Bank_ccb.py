@@ -16,6 +16,7 @@ class ccbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_ccb.CcbPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -58,8 +59,9 @@ class ccbSpider(scrapy.spiders.Spider):
             item['bank_type']   = "1"#银行类型
             item['prod_code']   = i['code']#产品编码
             item['prod_name']   = i['name']#产品名称
-            item['prod_type']   = self.type#产品类型
+            item['prod_type']   = i['yieldSpec']#产品类型
             item['start_amount']= i['purFloorAmt']#起购金额
+            item['coin_type']   = i['currencyType']#货币类型
             item['live_time']   = i['investPeriod']#ProdLimit周期
             item['buying_start']= i['collBgnDate']#购买周期
             item['buying_end']  = i['collEndDate']#购买周期

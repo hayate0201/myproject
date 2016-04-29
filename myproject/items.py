@@ -11,6 +11,7 @@ import scrapy
 class MyprojectItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    
     #自增编码，爬取数据不建议使用自增id
     bank_code   = scrapy.Field()#银行编码
     bank_name   = scrapy.Field()#银行名称
@@ -19,6 +20,7 @@ class MyprojectItem(scrapy.Item):
     prod_name   = scrapy.Field()#产品名称
     prod_type   = scrapy.Field()#产品类型：理财产品，基金，信托等
     start_amount= scrapy.Field()#起购金额
+    coin_type   = scrapy.Field()#货币类型
     live_time   = scrapy.Field()#周期
     buying_start= scrapy.Field()#购买开始日期
     buying_end  = scrapy.Field()#购买结束日期

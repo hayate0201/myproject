@@ -16,6 +16,7 @@ class ccbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_cib.CibPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }

@@ -14,6 +14,7 @@ class BankcommSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_comm.CommPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -56,12 +57,12 @@ class BankcommSpider(scrapy.spiders.Spider):
             
         elif code[0:1] == '2':
             item['std_rate']    = i[10].extract().strip()
-            item['live_time']   = i[8].extract()[0]#ProdLimit周期
-            item['buying_start']= i[6].extract()[0]
-            item['buying_end']  = i[7].extract()[0]
+            item['live_time']   = i[8].extract()#ProdLimit周期
+            item['buying_start']= i[6].extract()
+            item['buying_end']  = i[7].extract()
             item['prod_type']   = "封闭式"#产品类型
         else:
-            #item['std_rate']    = i[7].extract().strip()
+           
             item['std_rate']    = re.findall(r'(\d*.\d*%)',i[7].extract().strip(),re.M)
             if item['std_rate'] != []:
                 item['std_rate'] = item['std_rate'][0]
@@ -70,6 +71,7 @@ class BankcommSpider(scrapy.spiders.Spider):
             item['prod_type']   = "开放式"#产品类型
             
         item['start_amount']= i[4].extract().strip()
+        item['coin_type']   = i[2].extract().strip()
         item['risk_level']  = i[3].extract().strip()#风险等级
         
         item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY

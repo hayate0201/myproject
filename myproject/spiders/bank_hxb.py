@@ -11,7 +11,8 @@ class HxbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
-            'myproject.pip.pipelines_hxb.hxbPipeline': 100,
+            'myproject.pip.pipelines_hxb.HxbPipeline': 1,
+            'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
@@ -42,9 +43,10 @@ class HxbSpider(scrapy.spiders.Spider):
             item['buying_end']  = i.xpath('td[2]/p/text()').extract()
             
             item['prod_type']   = ""
-            item['start_amount']= ""
+            item['start_amount']= i.xpath('td[4]/p/text()').extract()
+            item['coin_type']   = "人民币"
             item['live_time']   = ""#ProdLimit周期
-            item['std_rate']    = ""#ProdProfit利率
+            item['std_rate']    = i.xpath('td[3]/p/text()').extract()#ProdProfit利率
             item['risk_level']  = ""#风险等级
             
             
@@ -63,21 +65,23 @@ class HxbSpider(scrapy.spiders.Spider):
                     self.last_time = i.xpath('td[2]/p/text()').extract()
                     item['buying_start'] = self.last_time
                     item['buying_end'] = self.last_time
-                    item['start_amount'] = i.xpath('td[4]/p/text()').extract()[0]
-                    item['std_rate'] = i.xpath('td[3]/p/text()').extract()[0]
+                    item['start_amount'] = i.xpath('td[4]/p/text()').extract()
+                    item['std_rate'] = i.xpath('td[3]/p/text()').extract()
+                    item['prod_name']= self.last_name[0]+"-"+str(item['start_amount'][0])+u"万"
                 elif self.row_time >1:
                     self.row_time -=1
-                    item['start_amount'] = i.xpath('td[3]/p/text()').extract()[0]
-                    item['std_rate'] = i.xpath('td[2]/p/text()').extract()[0]
+                    item['start_amount'] = i.xpath('td[3]/p/text()').extract()
+                    item['std_rate'] = i.xpath('td[2]/p/text()').extract()
                     item['buying_start'] = self.last_time
                     item['buying_end'] = self.last_time
+                    item['prod_name']= self.last_name[0]+"-"+str(item['start_amount'][0])+u"万"
             elif self.row_name > 1:#子产品
                 self.row_name -=1
-                item['start_amount'] = i.xpath('td[2]/p/text()').extract()[0]
-                item['std_rate'] = i.xpath('td[1]/p/text()').extract()[0]
+                item['start_amount'] = i.xpath('td[2]/p/text()').extract()
+                item['std_rate'] = i.xpath('td[1]/p/text()').extract()
                 item['buying_start'] = self.last_time
                 item['buying_end'] = self.last_time
-                item['prod_name']= self.last_name
+                item['prod_name']= self.last_name[0]+"-"+str(item['start_amount'][0])+u"万"
                 
             if row_type:
                 self.last_type = i.xpath('td[6]/p/text()').extract()[0]

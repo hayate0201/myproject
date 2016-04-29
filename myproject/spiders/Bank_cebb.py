@@ -16,6 +16,7 @@ class cebbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_cebb.CebbPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -60,7 +61,10 @@ class cebbSpider(scrapy.spiders.Spider):
         sites = response.xpath('//table[@class="zslccp"]/tbody/tr[@align]')
         for i in sites:
             url = i.xpath('td[2]/a/@href').extract()[0]#
-            content = i.xpath('normalize-space(td[9]/text())').extract()[0]
+            obj = {}
+            obj['std_rate'] = i.xpath('normalize-space(td[9]/text())').extract()[0]
+            obj['prod_type']= i.xpath('normalize-space(td[5]/text())').extract()[0]
+            content = str(obj)
             urls = "http://www.cebbank.com%s" %url
             yield scrapy.Request(urls,callback=self.get_data,body=content,dont_filter=True)
             self.row +=1
@@ -76,23 +80,24 @@ class cebbSpider(scrapy.spiders.Spider):
             print "This Error"
         
     def get_data(self,response):
-        
+        obj = eval(response.request.body)
         #提取区域
         site = response
 
         item = MyprojectItem()
         item = collections.OrderedDict(item)
-        item['bank_code']   = "ecbb"#银行编码
+        item['bank_code']   = "cebb"#银行编码
         item['bank_name']   = "光大银行"#银行名称
         item['bank_type']   = "1"#银行类型：
         item['prod_code']   = response.xpath('//*[@id="cpbh"]/text()').extract()[0]#产品编码
         item['prod_name']   = response.xpath('//table/tbody/tr[1]/td/b/text()').extract()[0]#产品名称
-        item['prod_type']   = "1"#产品类型
+        item['prod_type']   = obj['prod_type']#产品类型
         item['start_amount']= response.xpath('normalize-space(//*[@id="qgje"]/text())').extract()[0]#起购金额
+        item['coin_type']   = response.xpath('normalize-space(//*[@id="tzbz"]/text())').extract()[0]#起购金额
         item['live_time']   = response.xpath('normalize-space(//*[@id="cpqx"]/text())').extract()[0]#周期
         item['buying_start']= response.xpath('normalize-space(//*[@id="xsqsr"]/text())').extract()[0]#起始日期
         item['buying_end']  = response.xpath('normalize-space(//*[@id="xszzr"]/text())').extract()[0]#结束日期
-        item['std_rate']    = response.request.body#ProdProfit利率
+        item['std_rate']    = obj['std_rate']#ProdProfit利率
         item['risk_level']  = response.xpath('normalize-space(//*[@id="fxdj"]/text())').extract()[0]#风险等级
         item['status']      = response.xpath('normalize-space(//*[@id="cpzt"]/text())').extract()[0]#产品状态
         item['create_time'] = time.time()#抓取时间

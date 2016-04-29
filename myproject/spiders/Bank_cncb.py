@@ -14,6 +14,7 @@ class CnbcSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_cncb.CncbPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -40,7 +41,7 @@ class CnbcSpider(scrapy.spiders.Spider):
         text = str(response.body)
         test = re.findall(r'\'.eval\(\'(.*?)\'\)',text,re.M)
         totalPage = int(test[0])
-        
+        print totalPage
        
         #提取区域
         sites = response.xpath('//table[@id="charttab"]//tr[@class="bg_hui"]')
@@ -53,7 +54,7 @@ class CnbcSpider(scrapy.spiders.Spider):
             item['bank_type']   = "1"#银行类型：
             item['prod_code']   = i.xpath('td[2]//a/text()').extract()[0]#产品编码
             item['prod_name']   = i.xpath('td[3]//a/text()').extract()[0]#产品名称
-            item['prod_type']   = "1"#产品类型
+            item['prod_type']   = "非保本浮动收益型"#产品类型
             
             start_amount = i.xpath('td[@param_type="first_amt"]//span/text()').extract()[0]#起购金额
             print start_amount
@@ -61,7 +62,7 @@ class CnbcSpider(scrapy.spiders.Spider):
                 item['start_amount']= start_amount.replace(',','') + '0000'
             else:
                 item['start_amount']= '0'
-            
+            item['coin_type']   = i.xpath('td[4]//span/text()').extract()[0]#ProdLimit周期
             item['live_time']   = i.xpath('td[7]//span/text()').extract()[0]#ProdLimit周期
             item['buying_start']= i.xpath('td[5]//span/text()').extract()[0]#起始日期
             item['buying_end']  = i.xpath('td[6]//span/text()').extract()[0]#结束日期

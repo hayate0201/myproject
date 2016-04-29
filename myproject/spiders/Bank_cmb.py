@@ -14,6 +14,7 @@ class CmbSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_cmb.CmbPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -43,7 +44,7 @@ class CmbSpider(scrapy.spiders.Spider):
             content = json.dumps(i)
             urls = 'http://www.cmbchina.com/cfweb/Personal/productdetail.aspx?code=%s&type=prodinfo' %code
             yield scrapy.Request(urls,callback=self.get_data,body=content,dont_filter=True)
-            
+
         
         try:
             if self.page < total:
@@ -68,8 +69,9 @@ class CmbSpider(scrapy.spiders.Spider):
         item['bank_type']   = "1"#银行类型：
         item['prod_code']   = i['PrdCode']#产品编码
         item['prod_name']   = i['PrdName']#产品名称
-        item['prod_type']   = i['TypeCode']#产品类型
+        item['prod_type']   = response.xpath('//*[@id="column_content"]/div[2]/table/tbody/tr[2]/td[4]/div/ul/li[7]/span/text()').extract()[0]#产品类型
         item['start_amount']= money#起购金额
+        item['coin_type']   = i['Currency']
         item['live_time']   = i['FinDate']#ProdLimit周期
         item['buying_start']= i['BeginDate']
         item['buying_end']  = i['EndDate']

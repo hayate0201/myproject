@@ -13,6 +13,7 @@ class IcbcSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_icbc.IcbcPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -45,7 +46,6 @@ class IcbcSpider(scrapy.spiders.Spider):
         
     def getjson(self,response):
         #转为JOSN格式
-        
         json_obj=json.loads(response.body) 
         for i in json_obj:
             item = MyprojectItem()
@@ -55,7 +55,7 @@ class IcbcSpider(scrapy.spiders.Spider):
             item['bank_type']   = "1"#银行类型：
             item['prod_code']   = i['prodID']#产品编码
             item['prod_name']   = i['productName']#产品名称
-            item['prod_type']   = i['categoryL1']#产品类型
+            item['prod_type']   = "非保本浮动收益型"#产品类型
             item['start_amount']= i['buyPaamt']#起购金额
             item['live_time']   = i['productTerm']#ProdLimit周期
             time = i['offerPeriod'].split("-")

@@ -12,6 +12,7 @@ class CmbcSpider(scrapy.spiders.Spider):
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
+            'myproject.pip.pipelines_cmbc.CmbcPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
             'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
@@ -58,6 +59,7 @@ class CmbcSpider(scrapy.spiders.Spider):
         item['prod_name']   = i['prd_name']#产品名称
         item['prod_type']   = i['prd_type_name'].strip()#产品类型
         item['start_amount']= i['pfirst_amt']#起购金额
+        item['coin_type']   = i['curr_type_name'].strip()#货币类型
         item['live_time']   = i['liv_time_unit_name'].strip()#ProdLimit周期
         item['buying_start']= i['ipo_start_date']
         item['buying_end']  = i['ipo_end_date']
