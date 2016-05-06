@@ -17,7 +17,7 @@ class SpdbSpider(scrapy.spiders.Spider):
         'ITEM_PIPELINES':{
             'myproject.pip.pipelines_spdb.SpdbPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
-            #'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
     
@@ -90,9 +90,9 @@ class SpdbSpider(scrapy.spiders.Spider):
         item['prod_name']   = prod_name[0] if prod_name else "" 
         
         rule = [u'理财产品类型:',u'起点金额:',u'币种:',u'预期收益率:',u'申购起始日:',u'申购结束日:',
-                u'产品期限:']
+                u'产品期限:',u'风险等级:']
         field = ['prod_type','start_amount','coin_type','std_rate','buying_start','buying_end',
-                'live_time']
+                'live_time','risk_level']
         order = 0
         for i in rule:
             spider = response.xpath("//div[text()='%s']/ancestor::td" %(i))
