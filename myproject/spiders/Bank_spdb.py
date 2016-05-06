@@ -4,111 +4,107 @@
 
 import scrapy,json,codecs,time,os,re,chardet,collections
 from myproject.items import MyprojectItem
+from scrapy.exceptions import DropItem
 class SpdbSpider(scrapy.spiders.Spider):
     name = "bank_spdb"
-    allowed_domains = ["http://ebank.spdb.com.cn/"]
+    allowed_domains = ["http://per.spdb.com.cn/"]
     start_urls=[
-        'http://ebank.spdb.com.cn/net/finnaceMoreInfo.do?ftype=7&num=11&ispage=1&_PagableInfor.PageNo=1']
+        'http://per.spdb.com.cn/bank_financing/financial_product/'
+        ]
     
     #自定义管道
     custom_settings = {
         'ITEM_PIPELINES':{
             'myproject.pip.pipelines_spdb.SpdbPipeline': 1,
             'myproject.pipelines.Pipelines': 100,
-            'myproject.pip.pipelines_mongo.MongodbPipeline': 200
+            #'myproject.pip.pipelines_mongo.MongodbPipeline': 200
         }
     }
     
     def __init__(self):
         self.page=1
-        self.type=0
-        self.typelist=[7]
-        #self.typelist=[7,0,2,1,'A',8,9,'B','C','D']
+        self.maxpage=1
+        self.ids_seen = set()
         
     def parse(self, response):
-        #循环系列
-        for i in self.typelist:
-            self.type = i
-            urls = 'http://ebank.spdb.com.cn/net/finnaceMoreInfo.do?ftype=%s&num=99&ispage=1&_PagableInfor.PageNo=1' %i
-            yield scrapy.Request(urls, callback=self.get_itemurl,dont_filter=True)
-        
-        #urls = 'http://ebank.spdb.com.cn/net/www/20160329/per_0000900993.html'
-        #yield scrapy.Request(urls, callback=self.get_json,dont_filter=True)
-        #urls = 'http://ebank.spdb.com.cn/net/finnaceMoreInfo.do?ftype=7&num=11&ispage=1&_PagableInfor.PageNo=1'
-        #yield scrapy.Request(urls, callback=self.get_urllist,dont_filter=True)
 
-    def get_itemurl(self,response):
-        sites = response.xpath('//table/tr')
+        urls = "http://per.spdb.com.cn/was5/web/search"
+        print "================START_REQUESTS============"
+        #进行POST请求，提交相关参数
+        yield scrapy.FormRequest(
+            urls,
+            formdata = {
+                'page':'1',
+                'metadata':'finance_no|finance_state|finance_allname|finance_income|FINANCE_LIMITTIME|finance_buylimitmoney|finance_anticipate|finance_buydate|finance_stopdate|Finance_limittime_type|docpuburl',
+                'channelid':'298687',
+                'searchword':u'(%)*(Finance_limittime_type=%)*(finance_state=%)*(finance_buylimitmoney=%)\
+                            *(finance_state=可购买)*(chnlid=879)',
+                }, 
+            callback = self.get_code,
+            dont_filter=True
+        )
         
-        for i in sites:
-            site =  i.xpath('td[@class="border0"]/a/@href').extract()
-            commit = i.xpath('normalize-space(td[6]/div/text()|td[6]/text())').extract()
-            if commit != "-" and site !=[]:
-                if commit == "":
-                    commit = u"正在发行"
-                    
-                item = MyprojectItem()
-                item['bank_code']   = "spdb"#银行编码
-                item['bank_name']   = "浦发银行"#银行名称
-                item['bank_type']   = ""#银行类型：
-                item['prod_code']   = ""#产品编码     
-                item['prod_name']   = i.xpath('td[1]/a/@title').extract()[0]
-                item['prod_type']   = ""
-                item['live_time']   = i.xpath('td[2]/text()').extract()[0]
-                item['std_rate']    = i.xpath('td[3]/text()').extract()[0]
-                item['start_amount']= ""
-                item['coin_type']   = i.xpath('td[4]/text()').extract()[0]
-                time = i.xpath('td[5]/span/text()').extract()[0]
-                time = time.split("-")
-                item['buying_start']= time[0]
-                item['buying_end']  = time[1]
-
-                item['risk_level']  = ""
-                item['status']      = commit
-                item['total_type']  = "json"
-                item = str(item)
-                
-                url = 'http://ebank.spdb.com.cn'+site[0]
-                #print url
-                yield scrapy.Request(url, callback=self.get_json,body=item,dont_filter=True)
+    def get_code(self,response):
+        print response.url
+        body = eval(response.body)
+        
+        self.maxpage = int(body['pageTotal'])
+        print body['pageIndex']
+        for i in body['rows']:
+            prod_code  = i['finance_no']#产品编码
+            if prod_code in self.ids_seen:
+                print "Having!!"
+            else:
+                self.ids_seen.add(prod_code)
+                print prod_code+"   "+i['finance_allname']
+                urls = "https://ebank.spdb.com.cn/nbper/PreBankFinanceBuy.do?FinanceNo="+prod_code
+                yield scrapy.Request(urls,callback=self.get_data,dont_filter=True)
+        if self.page < self.maxpage:
+            self.page += 1
+            urls = "http://per.spdb.com.cn/was5/web/search"
+            yield scrapy.FormRequest(
+            urls,
+            formdata = {
+                'page':'%d' %self.page,
+                'metadata':'finance_no|finance_state|finance_allname|finance_income|FINANCE_LIMITTIME|finance_buylimitmoney|finance_anticipate|finance_buydate|finance_stopdate|Finance_limittime_type|docpuburl',
+                'channelid':'298687',
+                'searchword':u'(%)*(Finance_limittime_type=%)*(finance_state=%)*(finance_buylimitmoney=%)\
+                            *(finance_state=可购买)*(chnlid=879)',
+                }, 
+            callback = self.get_code,
+            dont_filter=True
+        )
             
-    def get_json(self,response):
-        #print response.request.body
-        body = str(response.body)
-        content_type = chardet.detect(body)
-        if content_type['encoding'] != "UTF-8":
-            body = body.decode(content_type['encoding'])
-        body = body.encode("utf-8")
-        prod_code   = re.findall(r'([0-9]{10})',body)[0]#产品编码
-        item2 = eval(response.request.body)
-        
+    def get_data(self,response): 
         item = MyprojectItem()
         item = collections.OrderedDict(item)
-        item['bank_code']   = item2['bank_code']
-        item['bank_name']   = item2['bank_name']
-        item['bank_type']   = item2['bank_type']
-        item['prod_code']   = prod_code#产品编码     
-        item['prod_name']   = item2['prod_name']
-        item['prod_type']   = item2['prod_type']
-        zz = u'收益类型'
-        item['prod_type']   = response.xpath("//td[p[text()='%s']]/following-sibling::*/p/text()" %(zz)).extract()[0]#产品类型
         
-        item['live_time']   = item2['live_time']
-        item['std_rate']    = item2['std_rate']
+        item['bank_code']   = "spdb"
+        item['bank_name']   = "浦发银行"
+        item['bank_type']   = "1"
+
+        prod_code   = response.xpath('/html/body/form/div[6]/div/div[2]/div[1]/div[2]/div/text()').extract()
+        item['prod_code'] = prod_code[0] if prod_code else "" 
         
+        prod_name   = response.xpath('/html/body/form/div[6]/div/div[2]/h4/text()').extract()
+        item['prod_name']   = prod_name[0] if prod_name else "" 
         
-        zz = [u'投资者认购金额',u'认购起点金额']
-        start_amount = response.xpath("//td[p[text()='%s']]|//td[p[text()='%s']]" %(zz[0],zz[1]))
-        item['start_amount']= start_amount.xpath('following-sibling::*/p/text()').extract()
-        item['coin_type']   = item2['coin_type']
-        item['buying_start']= item2['buying_start']
-        item['buying_end']  = item2['buying_end']
+        rule = [u'理财产品类型:',u'起点金额:',u'币种:',u'预期收益率:',u'申购起始日:',u'申购结束日:',
+                u'产品期限:']
+        field = ['prod_type','start_amount','coin_type','std_rate','buying_start','buying_end',
+                'live_time']
+        order = 0
+        for i in rule:
+            spider = response.xpath("//div[text()='%s']/ancestor::td" %(i))
+            data = spider.xpath('normalize-space(div[2]/div/text())').extract()
+            item[field[order]] = data[0] if data else ""
+            order += 1
+            
+        stauts = response.xpath('normalize-space(/html/body/form/div[8]/div/div/div/div/div/text())').extract()#产品状态
+        item['stauts']  = stauts[0] if stauts else "0"
         
-        zz = [u'产品风险等级',u'风险评定']
-        risk_level = response.xpath("//td[p[text()='%s']] |//td[p[text()='%s']] " %(zz[0],zz[1]))
-        item['risk_level'] = risk_level.xpath('following-sibling::*/p/text()').extract()
-        item['total_type']  = "json"
-        
-        
-        yield item
-   
+        item['total_type']  = "json"#全部数据类型：XML,JSON,HTML,ARRAY
+        if item['stauts'] == "":
+            yield item
+        else:
+            print "Drop!!"

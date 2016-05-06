@@ -45,13 +45,8 @@ class MongodbPipeline(object):
             }
         collname = "bank"
         try:
-            
             if item['buying_start'] < 0: item['buying_start'] = 0
-            if item['buying_start'] > 2147483648: item['buying_start'] = 0
             if item['buying_end'] < 0: item['buying_end'] =0
-            if item['buying_end'] > 2147483648: item['buying_end'] =0
-            
-        if item['buying_end'] < 0: item['buying_end'] =0
             self.db[collname].update(key,item,upsert=True)
         except:
             nowtime = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime(time.time()))
