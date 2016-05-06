@@ -56,7 +56,7 @@ class SpdbSpider(scrapy.spiders.Spider):
                 print "Having!!"
             else:
                 self.ids_seen.add(prod_code)
-                print prod_code+"   "+i['finance_allname']
+                #print prod_code+"   "+i['finance_allname']
                 urls = "https://ebank.spdb.com.cn/nbper/PreBankFinanceBuy.do?FinanceNo="+prod_code
                 yield scrapy.Request(urls,callback=self.get_data,dont_filter=True)
         if self.page < self.maxpage:

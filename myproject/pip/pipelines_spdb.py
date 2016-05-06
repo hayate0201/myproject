@@ -42,5 +42,4 @@ class SpdbPipeline(object):
         #风险等级
         item['risk_level'] = item['risk_level'].replace(u"较低风险","2").replace(u"较高风险","4")\
                             .replace(u"低风险","1").replace(u"中风险","3").replace(u"高风险","5")
-        item['risk_level'] = "".join(re.findall(r'(\d*)',item['risk_level'],re.M))
         return item
