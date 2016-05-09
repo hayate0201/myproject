@@ -59,5 +59,6 @@ class PinganPipeline(object):
         #风险等级
         item['risk_level'] = item['risk_level'].replace(u"较低","2").replace(u"较高","4") \
                                 .replace(u"低","1").replace(u"中","3").replace(u"高","5")
+        item['risk_level'] = re.findall(r'(\d)',item['risk_level'],re.M)[0]  
        
         return item
