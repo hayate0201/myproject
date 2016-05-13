@@ -20,8 +20,12 @@ class AbcPipeline(object):
             item['buying_start'] = 0
             item['buying_end'] = 0
         #利率
-        item['std_rate'] = item['std_rate'].replace("%","").split("-")[0]
-        if not item['std_rate']:
+        item['std_rate'] = item['std_rate'].replace("%","").split("-")
+        if len(item['std_rate']) ==2:
+            item['std_rate'] = item['std_rate'][1]
+        elif len(item['std_rate']) ==1:
+            item['std_rate'] = item['std_rate'][0]
+        else:
             item['std_rate'] = 0
         #风险等级
         item['risk_level'] = item['risk_level'].replace(u"中低","2").replace(u"中高","4") \

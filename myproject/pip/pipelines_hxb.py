@@ -54,10 +54,12 @@ class HxbPipeline(object):
         item['live_time'] = '0'
         
         #利率
+        
         if len(item['std_rate']) > 0:
             item['std_rate'] = item['std_rate'][0].replace("%","").replace(" ","")
         else:
             item['std_rate'] = "0"
+            
         #风险等级
         item['risk_level'] = "0"
         

@@ -34,10 +34,6 @@ class MongodbPipeline(object):
         self.client.close()
 
     def process_item(self, item, spider):
-        
-        today = datetime.date.today()
-        time_line = datetime.datetime.strftime(today, '%Y%m%d')
-        item['time_line'] = time_line
         key = {
             'prod_name':item['prod_name'],
             'prod_code':item['prod_code'],

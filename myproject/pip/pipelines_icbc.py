@@ -38,13 +38,18 @@ class IcbcPipeline(object):
             item['live_time'] = "0"
         
         #利率
+        
         item['std_rate'] = re.findall(r'(\d*\.\d*)%',item['std_rate'],re.M)
-        if len(item['std_rate']) > 0:
+        
+        if len(item['std_rate']) == 2:
+            item['std_rate'] = item['std_rate'][1]
+        elif len(item['std_rate']) == 1:
             item['std_rate'] = item['std_rate'][0]
         else:
             item['std_rate'] = "0"
             
         item['std_rate'] = round(float(item['std_rate']), 2)
+        
         #风险等级
         item['risk_level'] = "0"
         

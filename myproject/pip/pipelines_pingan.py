@@ -50,12 +50,15 @@ class PinganPipeline(object):
             item['live_time'] = "0"
         
         #利率
-        item['std_rate'] = re.findall(r'(\d*\.\d*)%',item['std_rate'][0],re.M)
-        if len(item['std_rate']) > 0:
+        
+        item['std_rate'] = item['std_rate'][0].replace("%","").split("-")
+        if len(item['std_rate']) ==2:
+            item['std_rate'] = item['std_rate'][1]
+        elif len(item['std_rate']) ==1:
             item['std_rate'] = item['std_rate'][0]
         else:
-            item['std_rate'] = "0"
-            
+            item['std_rate'] = 0
+        
         #风险等级
         item['risk_level'] = item['risk_level'].replace(u"较低","2").replace(u"较高","4") \
                                 .replace(u"低","1").replace(u"中","3").replace(u"高","5")

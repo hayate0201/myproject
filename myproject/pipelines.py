@@ -4,7 +4,8 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-import os,codecs,json,collections,time
+import os,codecs,json,collections,time,datetime
+from scrapy.exceptions import DropItem
 
 class Pipelines(object):
     
@@ -12,10 +13,15 @@ class Pipelines(object):
     def process_item(self, item, spider):
         item['create_time'] = time.time()#抓取时间
         item['create_time2'] = time.strftime('%Y-%m-%d %H:%M:%S')#抓取时间
-        
-        line = json.dumps(collections.OrderedDict(item)) + "\n"
-        self.file.write(line.decode("unicode_escape")) 
-        return item
+        today = datetime.date.today()
+        time_line = datetime.datetime.strftime(today, '%Y%m%d')
+        item['time_line'] = time_line
+        if item['buying_end'] < time.time():
+            raise DropItem("Duplicate item found: %s" % item)
+        else:
+            line = json.dumps(collections.OrderedDict(item)) + "\n"
+            self.file.write(line.decode("unicode_escape")) 
+            return item
     
     #爬虫开始时创建对应文件
     def open_spider(self, spider):

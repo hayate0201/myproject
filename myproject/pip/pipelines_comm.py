@@ -8,8 +8,10 @@ class CommPipeline(object):
     def process_item(self, item, spider):
         #起购金额
         item['start_amount'] = re.findall(ur'(\d*)万',item['start_amount'],re.M)
-        if len(item['start_amount']) > 0:
-            item['start_amount'] = item['start_amount'][0]+"000"
+        if len(item['start_amount']) == 2:
+            item['start_amount'] = item['start_amount'][1]+"0000"
+        elif len(item['start_amount']) == 1:
+            item['start_amount'] = item['start_amount'][0]+"0000"
         else:
             item['start_amount'] = "0"
         #购买周期
@@ -41,12 +43,15 @@ class CommPipeline(object):
       
         #利率
         item['std_rate'] = item['std_rate'].replace("%","").split("~")
-        if len(item['std_rate']) > 0:
+        
+        if len(item['std_rate']) == 2:
+            item['std_rate'] = item['std_rate'][1]
+        elif len(item['std_rate']) == 1:
             item['std_rate'] = item['std_rate'][0]
-            if not item['std_rate']:
-                item['std_rate'] = "0"
         else:
-            item['std_rate'] = "0"
+            item['std_rate'] = 0
+        if item['std_rate'] == "":
+            item['std_rate'] = 0
         
         #风险等级
         item['risk_level'] = re.findall(r'(\d)',item['risk_level'],re.M)[0]  
