@@ -13,6 +13,7 @@ from scrapy.exceptions import DropItem
 class IcbcPipeline(object):
 
     def process_item(self, item, spider):
+        print item['prod_name']
         #起购金额
         item['start_amount'] = item['start_amount'].replace(".00","").replace("-","0")
         
@@ -51,6 +52,6 @@ class IcbcPipeline(object):
         item['std_rate'] = round(float(item['std_rate']), 2)
         
         #风险等级
-        item['risk_level'] = "0"
+        #item['risk_level'] = "0"
         
         return item

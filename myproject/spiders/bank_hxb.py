@@ -36,8 +36,8 @@ class HxbSpider(scrapy.spiders.Spider):
             
             item['bank_type']   = "1"#银行类型
             item['prod_code']   = ""#产品编码
-            item['prod_name']   = i.xpath('td[1]/p/text()').extract()#产品名称
-            
+            item['prod_name']   = "".join(i.xpath('td[1]/p/text()').extract())#产品名称
+            #print item['prod_name']
             
             item['buying_start']= i.xpath('td[2]/p/text()').extract()
             item['buying_end']  = i.xpath('td[2]/p/text()').extract()
@@ -48,7 +48,6 @@ class HxbSpider(scrapy.spiders.Spider):
             item['live_time']   = ""#ProdLimit周期
             item['std_rate']    = i.xpath('td[3]/p/text()').extract()#ProdProfit利率
             item['risk_level']  = ""#风险等级
-            
             
             #解析产品表单
             row_name = i.xpath('td[1]/@rowspan').extract()
@@ -67,21 +66,21 @@ class HxbSpider(scrapy.spiders.Spider):
                     item['buying_end'] = self.last_time
                     item['start_amount'] = i.xpath('td[4]/p/text()').extract()
                     item['std_rate'] = i.xpath('td[3]/p/text()').extract()
-                    item['prod_name']= self.last_name[0]+"-"+str(item['start_amount'][0])+u"万"
+                    item['prod_name']= self.last_name+"-"+str(item['start_amount'][0])+u"万"
                 elif self.row_time >1:
                     self.row_time -=1
                     item['start_amount'] = i.xpath('td[3]/p/text()').extract()
                     item['std_rate'] = i.xpath('td[2]/p/text()').extract()
                     item['buying_start'] = self.last_time
                     item['buying_end'] = self.last_time
-                    item['prod_name']= self.last_name[0]+"-"+str(item['start_amount'][0])+u"万"
+                    item['prod_name']= self.last_name+"-"+str(item['start_amount'][0])+u"万"
             elif self.row_name > 1:#子产品
                 self.row_name -=1
                 item['start_amount'] = i.xpath('td[2]/p/text()').extract()
                 item['std_rate'] = i.xpath('td[1]/p/text()').extract()
                 item['buying_start'] = self.last_time
                 item['buying_end'] = self.last_time
-                item['prod_name']= self.last_name[0]+"-"+str(item['start_amount'][0])+u"万"
+                item['prod_name']= self.last_name+"-"+str("".join(item['start_amount']))+u"万"
                 
             if row_type:
                 self.last_type = i.xpath('td[6]/p/text()').extract()[0]
@@ -90,7 +89,7 @@ class HxbSpider(scrapy.spiders.Spider):
                 item['prod_type'] = self.last_type
                 
                 
-            
+            #print item['prod_name']
             yield item
 
             

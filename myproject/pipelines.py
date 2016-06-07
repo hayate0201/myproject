@@ -16,7 +16,7 @@ class Pipelines(object):
         today = datetime.date.today()
         time_line = datetime.datetime.strftime(today, '%Y%m%d')
         item['time_line'] = time_line
-        if item['buying_end'] < time.time():
+        if (item['buying_end']+82800) < time.time():
             raise DropItem("Duplicate item found: %s" % item)
         else:
             line = json.dumps(collections.OrderedDict(item)) + "\n"

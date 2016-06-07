@@ -18,8 +18,7 @@ class HxbPipeline(object):
         #产品名字
         if len(item['prod_name']) > 0:
             item['prod_name'] = "".join(item['prod_name']).replace(" ","")
-        else:
-            pass
+
         #起购金额
         if len(item['start_amount']) > 0:
             item['start_amount'] = item['start_amount'][0]+"0000"
@@ -61,7 +60,7 @@ class HxbPipeline(object):
             item['std_rate'] = "0"
             
         #风险等级
-        item['risk_level'] = "0"
+        item['risk_level'] = "2"
         
         
         item['create_time'] = time.time()#抓取时间
