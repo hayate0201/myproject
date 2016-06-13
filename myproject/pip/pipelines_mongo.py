@@ -5,7 +5,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 #把数据导入到mongodb
-
+#db.bank.find({"time_line":"20160613","bank_code":"hxb"})
 import pymongo,datetime,os,codecs,time
 from scrapy.conf import settings
 

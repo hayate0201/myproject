@@ -50,8 +50,8 @@ class HxbPipeline(object):
         else:
             item['buying_end'] = 0
         #周期
-        item['live_time'] = '0'
-        
+        item['live_time'] = re.findall(ur'(\d.)天',item['prod_name'],re.M)
+        item['live_time'] = item['live_time'][0] if item['live_time'] else "0"
         #利率
         
         if len(item['std_rate']) > 0:
