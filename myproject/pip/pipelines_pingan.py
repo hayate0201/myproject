@@ -45,10 +45,15 @@ class PinganPipeline(object):
             item['buying_end'] = 0
         
         #周期
-        item['live_time'] = "".join(re.findall(r'(\d*)',item['live_time'][0],re.M))
+        
+        item['live_time'] = "".join(item['live_time']).replace(u"天","").replace(u"年","x365").replace(" ","")
         if not item['live_time']:
             item['live_time'] = "0"
-        
+        item['live_time'] = item['live_time'].split("x")
+        if len(item['live_time']) == 2:
+            item['live_time'] = int(item['live_time'][0]) * int(item['live_time'][1])
+        else:
+            item['live_time'] = item['live_time'][0]
         #利率
         
         item['std_rate'] = item['std_rate'][0].replace("%","").split("-")
