@@ -15,7 +15,8 @@ class CqcbPipeline(object):
     def process_item(self, item, spider):
         if item['prod_name'] and item['buying_start'] and item['live_time'] and item['std_rate']\
             and item['risk_level'] and item['prod_name'] != u"产品名称":
-            #购买周期
+        #if 1==1: 
+        #购买周期
             buyingTime = item['buying_start']
             if len(buyingTime) == 1:
                 item['buying_start'] = 0

@@ -40,7 +40,7 @@ class BankabcSpider(scrapy.spiders.Spider):
         for i in sites:
             item = MyprojectItem()
             item = collections.OrderedDict(item)
-            TD1 = i.xpath('td[1]/p')
+            TD1 = i.xpath('td[1]/div')
             x=[]
             for n in TD1:
                 title = n.xpath('span//text()').extract()
@@ -53,7 +53,7 @@ class BankabcSpider(scrapy.spiders.Spider):
             item['prod_code']   = ""#产品编码
             #print u"产品名字"
             item['prod_name']   = x[0] if x else ""#产品名称
-            time = "".join(i.xpath('td[2]/p//text()').extract()).encode("GBK", "ignore").replace(" ","")
+            time = "".join(i.xpath('td[2]/div//text()').extract()).encode("GBK", "ignore").replace(" ","")
             #print u"时间"
             item['buying_start']= time.split("-")
             item['buying_end']  = time.split("-")
@@ -61,7 +61,7 @@ class BankabcSpider(scrapy.spiders.Spider):
             item['start_amount']= 50000
             item['coin_type']   = "人民币"
             #print u"周期"
-            item['live_time']   = "".join(i.xpath('td[4]/p//text()').extract())
-            item['std_rate']    = "".join(i.xpath('td[5]/p//text()').extract())
-            item['risk_level']  = "".join(i.xpath('td[3]/p//text()').extract())
+            item['live_time']   = "".join(i.xpath('td[4]/div//text()').extract())
+            item['std_rate']    = "".join(i.xpath('td[5]/div//text()').extract())
+            item['risk_level']  = "".join(i.xpath('td[3]/div//text()').extract())
             yield item
